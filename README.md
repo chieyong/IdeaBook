@@ -75,7 +75,9 @@ dan draai je bij elke push ook terug wat je in het dashboard hebt aangepast. Het
 script toont eerst `supabase config diff`, zodat je ziet wat er verandert voordat
 je ja zegt.
 
-Liever alles met de hand? Hieronder staat dezelfde configuratie stap voor stap.
+Liever met de hand? Hieronder staat dezelfde configuratie stap voor stap; dat is
+de route die dit project volgt. Het script en `supabase/config.toml` blijven
+staan voor als je het later alsnog wilt automatiseren.
 
 ## Wat je in Supabase instelt
 
@@ -85,11 +87,11 @@ Liever alles met de hand? Hieronder staat dezelfde configuratie stap voor stap.
    tabellen `idea`, `fragment` en `idea_link`, zet Row Level Security aan en maakt
    de storage-bucket `fragment-afbeeldingen` (die pas vanaf fase 2 gebruikt wordt).
    Werk je met de Supabase CLI, dan doet `supabase db push` hetzelfde.
-3. **Sleutels overnemen.** *Project Settings → API*: kopieer de `Project URL` en de
-   `anon public` key naar je `.env`:
+3. **Sleutels overnemen.** *Project Settings → API*: kopieer de `anon public` key
+   naar je `.env`. De URL staat al vast:
 
    ```
-   VITE_SUPABASE_URL=https://xxxx.supabase.co
+   VITE_SUPABASE_URL=https://jkiipthtwgzpvoagyqte.supabase.co
    VITE_SUPABASE_ANON_KEY=eyJ...
    ```
 
@@ -99,8 +101,17 @@ Liever alles met de hand? Hieronder staat dezelfde configuratie stap voor stap.
    Magic links werken standaard; wachtwoorden heb je niet nodig.
 5. **Redirect-URL's.** *Authentication → URL Configuration*:
    - `Site URL`: je Netlify-adres, bijvoorbeeld `https://vonkenboek.netlify.app`
-   - `Redirect URLs`: daar `http://localhost:5173` aan toevoegen voor lokaal werken,
-     en eventueel `https://*--vonkenboek.netlify.app` voor deploy previews.
+   - `Redirect URLs`: deze vier toevoegen —
+
+     ```
+     http://localhost:5173
+     http://localhost:4173
+     https://vonkenboek.netlify.app
+     https://*--vonkenboek.netlify.app
+     ```
+
+     `5173` is `npm run dev`, `4173` is `npm run preview` (waar je de service
+     worker test), en de laatste regel vangt de deploy previews af.
 
    De app stuurt `window.location.origin` mee als redirect, dus elk adres dat je
    gebruikt moet in die lijst staan — anders kom je na het klikken op de mail-link
