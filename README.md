@@ -28,6 +28,42 @@ cp .env.example .env     # vul je Supabase-gegevens in
 npm run dev
 ```
 
+## Infrastructuur opzetten met de CLI's
+
+Er is een script dat alle stappen achter elkaar doet en voor elke wijziging om
+bevestiging vraagt. Draai het op je eigen machine: `supabase login` en
+`netlify login` openen een browser, dus in een container werken ze niet.
+
+```bash
+brew install supabase/tap/supabase     # of: npm i -g supabase
+npm install -g netlify-cli
+supabase login
+netlify login
+
+./scripts/infra-opzetten.sh <supabase-project-ref> [netlify-site-naam]
+```
+
+Het script controleert eerst of beide CLI's er zijn en of je bent ingelogd, en
+loopt dan langs: project koppelen → migraties uitvoeren → auth-URL's pushen
+vanuit `supabase/config.toml` → publieke sleutel ophalen → Netlify-site aanmaken
+→ GitHub-repo koppelen → `VITE_SUPABASE_URL` en `VITE_SUPABASE_ANON_KEY` zetten
+→ deployen. De `service_role` key wordt nergens aangeraakt; die hoort niet in een
+frontend en niet in een Netlify-buildvariabele.
+
+Twee dingen die het script niet zelf kan:
+
+- **Het Supabase-project aanmaken** als je er nog geen hebt. Doe dat in het
+  dashboard, of met `supabase projects create vonkenboek --org-id <org> --region eu-central-1`.
+- **De GitHub-koppeling** volledig automatisch leggen: `netlify init` vraagt
+  interactief om toegang tot je GitHub-account. Je kunt het ook in de Netlify-UI
+  doen onder *Site configuration → Build & deploy → Link repository*.
+
+De auth-URL's staan in `supabase/config.toml` en gaan met `supabase config push`
+naar het project. Heet je site anders dan `vonkenboek`, geef die naam dan als
+tweede argument mee — het script past het domein dan overal aan.
+
+Liever alles met de hand? Hieronder staat dezelfde configuratie stap voor stap.
+
 ## Wat je in Supabase instelt
 
 1. **Project aanmaken** op [supabase.com](https://supabase.com) (regio Frankfurt ligt het dichtst bij).
@@ -87,8 +123,11 @@ src/
   pages/        Vangen, Lijst, Detail, Login, Instellen
 supabase/
   migrations/   SQL-schema met RLS
+supabase/
+  config.toml   auth-instellingen (site-URL en redirect-URL's) voor `supabase config push`
 scripts/
   genereer-iconen.mjs   maakt de PWA-iconen opnieuw (geen dependencies nodig)
+  infra-opzetten.sh     zet Supabase en Netlify op via de CLI's, stap voor stap
 ```
 
 ## Afwijkingen van het oorspronkelijke datamodel

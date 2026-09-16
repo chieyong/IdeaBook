@@ -9,3 +9,7 @@ dist-ssr
 .vite
 .netlify
 npm-debug.log*
+
+# Supabase CLI
+supabase/.temp
+supabase/.branches
