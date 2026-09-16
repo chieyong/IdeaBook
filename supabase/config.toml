@@ -1,15 +1,18 @@
 # Supabase CLI-configuratie voor Vonkenboek.
 #
-# Deze waarden gaan met `supabase config push` naar het gekoppelde project.
-# Pas het domein hieronder aan als je Netlify-site anders heet: het staat op
-# drie plekken (site_url en twee redirect-URL's).
+# `supabase config push` overschrijft op het project precies die instellingen
+# die hier staan, en laat de rest met rust. Daarom staat hier bewust alleen wat
+# we echt willen beheren: waar Supabase je na een magic link naartoe stuurt.
+# Zet je hier meer neer, dan overschrijf je bij elke push ook wat je in het
+# dashboard hebt aangepast.
+#
+# Heet je Netlify-site anders? Pas het domein hieronder aan (of geef de naam als
+# tweede argument aan scripts/infra-opzetten.sh, dan doet die het voor je).
 
 project_id = "vonkenboek"
 
 [auth]
-enabled = true
-
-# Waar Supabase je na het klikken op de magic link naartoe stuurt.
+# Waar de magic link je naartoe stuurt als er geen ander adres is meegegeven.
 site_url = "https://vonkenboek.netlify.app"
 
 # Elk adres waarop de app draait moet hier staan, anders weigert Supabase de
@@ -20,24 +23,3 @@ additional_redirect_urls = [
   "https://vonkenboek.netlify.app",
   "https://*--vonkenboek.netlify.app",
 ]
-
-# Een uur geldig, daarna vernieuwt de client zichzelf.
-jwt_expiry = 3600
-enable_refresh_token_rotation = true
-refresh_token_reuse_interval = 10
-
-# Zet dit op false zodra je zelf één keer bent ingelogd; dan kan niemand
-# anders een account maken op jouw project.
-enable_signup = true
-
-[auth.email]
-enable_signup = true
-# Magic links zijn de enige manier van inloggen; wachtwoorden hebben we niet nodig.
-enable_confirmations = true
-secure_password_change = false
-max_frequency = "60s"
-otp_length = 6
-otp_expiry = 3600
-
-[db]
-major_version = 17

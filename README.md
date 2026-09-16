@@ -62,6 +62,13 @@ De auth-URL's staan in `supabase/config.toml` en gaan met `supabase config push`
 naar het project. Heet je site anders dan `vonkenboek`, geef die naam dan als
 tweede argument mee — het script past het domein dan overal aan.
 
+Let op bij dat bestand: `config push` overschrijft precies die instellingen die
+erin staan, en laat de rest ongemoeid. Daarom staan er bewust alleen `site_url`
+en `additional_redirect_urls` in. Zet je er meer in (bijvoorbeeld `enable_signup`),
+dan draai je bij elke push ook terug wat je in het dashboard hebt aangepast. Het
+script toont eerst `supabase config diff`, zodat je ziet wat er verandert voordat
+je ja zegt.
+
 Liever alles met de hand? Hieronder staat dezelfde configuratie stap voor stap.
 
 ## Wat je in Supabase instelt

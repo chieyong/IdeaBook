@@ -104,6 +104,9 @@ if [[ "$SITE_NAAM" != "vonkenboek" ]]; then
     rm -f supabase/config.toml.bak
   fi
 fi
+grijs "config.toml declareert alleen deze twee instellingen; al het andere op"
+grijs "het project blijft zoals het is. Eerst het verschil met wat er nu staat:"
+supabase config diff || true
 if bevestig "deze auth-instellingen naar Supabase pushen?"; then
   supabase config push
 else
@@ -112,7 +115,8 @@ fi
 
 # ---------------------------------------------------------------- stap 4 ----
 blauw "Stap 4 — de sleutels ophalen"
-grijs "Alleen de publieke (anon/publishable) key; de service_role key blijft hier weg."
+grijs "Alleen de publieke (anon/publishable) key. Zonder --reveal toont de CLI de"
+grijs "geheime sleutels sowieso niet voluit, en die vlag gebruiken we bewust niet."
 SUPABASE_URL="https://${PROJECT_REF}.supabase.co"
 ANON_KEY="$(
   supabase projects api-keys --project-ref "$PROJECT_REF" --output json |
@@ -120,10 +124,20 @@ ANON_KEY="$(
       let ruw = ""
       process.stdin.on("data", (d) => (ruw += d))
       process.stdin.on("end", () => {
-        const sleutels = JSON.parse(ruw)
-        const publiek = sleutels.find((s) => s.name === "anon" || s.name === "publishable" || s.type === "publishable")
-        if (!publiek) { console.error("geen publieke key gevonden"); process.exit(1) }
-        process.stdout.write(publiek.api_key ?? publiek.apiKey ?? "")
+        const lijst = JSON.parse(ruw)
+        const sleutels = Array.isArray(lijst) ? lijst : (lijst.keys ?? [])
+        const naam = (s) => String(s.name ?? s.type ?? "").toLowerCase()
+        const waarde = (s) => String(s.api_key ?? s.apiKey ?? s.key ?? "")
+        // Geheime sleutels vallen af, ook als de CLI ze ooit zou meesturen.
+        const geheim = /service_role|secret/
+        // Voorkeur voor de legacy anon-key: die werkt met elke supabase-js.
+        const publiek =
+          sleutels.find((s) => naam(s) === "anon" && !geheim.test(naam(s))) ??
+          sleutels.find((s) => naam(s).includes("publishable"))
+        if (!publiek) { console.error("geen publieke key in het antwoord"); process.exit(1) }
+        const key = waarde(publiek)
+        if (!key || key.includes("*")) { console.error("key is afgeschermd of leeg"); process.exit(1) }
+        process.stdout.write(key)
       })
     '
 )"
@@ -145,9 +159,9 @@ fi
 
 # ---------------------------------------------------------------- stap 5 ----
 blauw "Stap 5 — de Netlify-site"
-if netlify status 2>/dev/null | grep -qi 'project name'; then
+if [[ -f .netlify/state.json ]]; then
   grijs "Deze map is al aan een Netlify-site gekoppeld:"
-  netlify status | grep -iE 'project name|project url' | sed 's/^/     /'
+  netlify status 2>/dev/null | sed 's/^/     /' | head -8
 else
   grijs "Maakt een nieuwe site aan met de naam '$SITE_NAAM' en koppelt deze map eraan."
   if bevestig "site aanmaken?"; then
