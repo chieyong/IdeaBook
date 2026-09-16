@@ -1,0 +1,102 @@
+# Vonkenboek
+
+Een persoonlijke app om ideeën vast te leggen: app-ideeën, korte films, projectjes.
+Het uitgangspunt: **vangen moet binnen vijf seconden kunnen, ordenen komt later.**
+Bij het invoeren vraagt de app nooit om structuur.
+
+React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify.
+
+## Wat er nu in zit (fase 1)
+
+- **Vangen** — één veld voor je idee, optioneel één zin erbij. Enter bewaart meteen.
+- **Type met één tik** — App, Film, Project of Overig; standaard is `overig`.
+- **Toevoegen aan bestaand idee** — zoek op titel en je tekst wordt een fragment op dat idee.
+- **Inbox** — alles wat je vangt krijgt status `vonk` en verschijnt op het startscherm.
+- **Overzicht** — alle ideeën, te filteren op type en status.
+- **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
+- **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
+- Licht en donker thema via `prefers-color-scheme`, mobile-first.
+
+Fase 2 (sjablonen, status, tags, scores, matrix) en fase 3 (review, herontdek,
+kerkhof, koppelen) zitten er nog niet in; het datamodel houdt er wel al rekening mee.
+
+## Zelf opstarten
+
+```bash
+npm install
+cp .env.example .env     # vul je Supabase-gegevens in
+npm run dev
+```
+
+## Wat je in Supabase instelt
+
+1. **Project aanmaken** op [supabase.com](https://supabase.com) (regio Frankfurt ligt het dichtst bij).
+2. **Schema laden.** Open *SQL Editor*, plak de inhoud van
+   `supabase/migrations/20260916090000_init.sql` en voer die uit. Dat maakt de
+   tabellen `idea`, `fragment` en `idea_link`, zet Row Level Security aan en maakt
+   de storage-bucket `fragment-afbeeldingen` (die pas vanaf fase 2 gebruikt wordt).
+   Werk je met de Supabase CLI, dan doet `supabase db push` hetzelfde.
+3. **Sleutels overnemen.** *Project Settings → API*: kopieer de `Project URL` en de
+   `anon public` key naar je `.env`:
+
+   ```
+   VITE_SUPABASE_URL=https://xxxx.supabase.co
+   VITE_SUPABASE_ANON_KEY=eyJ...
+   ```
+
+   De anon-key mag in de frontend staan; RLS bewaakt de data. De `service_role`
+   key hoort hier nooit in.
+4. **Auth instellen.** *Authentication → Providers → Email*: zet "Email" aan.
+   Magic links werken standaard; wachtwoorden heb je niet nodig.
+5. **Redirect-URL's.** *Authentication → URL Configuration*:
+   - `Site URL`: je Netlify-adres, bijvoorbeeld `https://vonkenboek.netlify.app`
+   - `Redirect URLs`: daar `http://localhost:5173` aan toevoegen voor lokaal werken,
+     en eventueel `https://*--vonkenboek.netlify.app` voor deploy previews.
+
+   De app stuurt `window.location.origin` mee als redirect, dus elk adres dat je
+   gebruikt moet in die lijst staan — anders kom je na het klikken op de mail-link
+   op de verkeerde plek uit.
+6. **Alleen jijzelf?** Zet in *Authentication → Sign In / Up* "Allow new users to
+   sign up" uit nadat je één keer bent ingelogd. Dan kan niemand anders een account
+   maken op jouw project.
+
+## Wat je in Netlify instelt
+
+1. **Site koppelen** aan de GitHub-repo. Build command en publish directory staan al
+   in `netlify.toml` (`npm run build` → `dist`), inclusief de SPA-redirect die nodig
+   is omdat de app client-side routes gebruikt zoals `/idee/<id>`.
+2. **Environment variables** (*Site configuration → Environment variables*):
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+
+   Deze worden tijdens de build ingebakken, dus na het wijzigen ervan moet je
+   opnieuw deployen.
+3. **Adres kiezen** en dat adres in Supabase invullen bij `Site URL` (stap 5 hierboven).
+
+Daarna kun je de site op je telefoon openen en via *Deel → Zet op beginscherm*
+installeren. De service worker wordt alleen in een productiebuild geactiveerd;
+lokaal testen doe je met `npm run build && npm run preview`.
+
+## Structuur
+
+```
+src/
+  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld
+  context/      AuthContext (sessie + magic link)
+  lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak
+  pages/        Vangen, Lijst, Detail, Login, Instellen
+supabase/
+  migrations/   SQL-schema met RLS
+scripts/
+  genereer-iconen.mjs   maakt de PWA-iconen opnieuw (geen dependencies nodig)
+```
+
+## Afwijkingen van het oorspronkelijke datamodel
+
+- `fragment` heeft ook een `user_id`. Dat is strikt genomen dubbel (het idee weet
+  al van wie het is), maar de RLS-regels worden er simpeler en sneller van: geen
+  join nodig bij elke query.
+- `idea_link` heeft een `user_id` en de regel `idea_a < idea_b`, zodat dezelfde
+  koppeling niet twee keer kan bestaan (A→B en B→A).
+- `tags` en `sjabloon_antwoorden` hebben `not null` met een lege standaardwaarde,
+  zodat je in de app nooit op `null` hoeft te controleren.
