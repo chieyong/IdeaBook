@@ -3,26 +3,32 @@
 # Zet de infrastructuur voor Vonkenboek op met de Supabase CLI en de Netlify CLI.
 # Draai dit op je eigen machine (de browser-login werkt niet in een container).
 #
-#   ./scripts/infra-opzetten.sh <supabase-project-ref> [netlify-site-naam]
+#   ./scripts/infra-opzetten.sh [supabase-project-ref] [netlify-site-naam]
+#
+# Zonder argumenten gebruikt het script het project uit STANDAARD_REF hieronder.
 #
 # Elke stap die iets aanmaakt of wijzigt vraagt eerst om bevestiging.
 # De service_role key wordt nergens gebruikt: die hoort niet in een frontend.
 
 set -euo pipefail
 
-PROJECT_REF="${1:-}"
+# Het Supabase-project van Vonkenboek: https://jkiipthtwgzpvoagyqte.supabase.co
+# Een project-ref is niet geheim; hij zit ook in de frontend-bundel.
+STANDAARD_REF="jkiipthtwgzpvoagyqte"
+
+PROJECT_REF="${1:-$STANDAARD_REF}"
 SITE_NAAM="${2:-vonkenboek}"
 WORTEL="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$WORTEL"
 
-if [[ -z "$PROJECT_REF" ]]; then
-  cat >&2 <<'UITLEG'
-Gebruik: ./scripts/infra-opzetten.sh <supabase-project-ref> [netlify-site-naam]
+if [[ ! "$PROJECT_REF" =~ ^[a-z]{20}$ ]]; then
+  cat >&2 <<UITLEG
+"$PROJECT_REF" ziet er niet uit als een project-ref (twintig kleine letters).
 
-De project-ref is het stukje uit je Supabase-URL:
-https://<project-ref>.supabase.co — te vinden onder Project Settings > General.
-Heb je nog geen project? Maak er eerst een aan op https://supabase.com/dashboard
-(of met: supabase projects create vonkenboek --org-id <org> --region eu-central-1).
+Gebruik: ./scripts/infra-opzetten.sh [supabase-project-ref] [netlify-site-naam]
+
+De ref is het stukje uit je Supabase-URL: https://<project-ref>.supabase.co,
+te vinden onder Project Settings > General.
 UITLEG
   exit 1
 fi
@@ -73,7 +79,8 @@ fi
 
 # ---------------------------------------------------------------- stap 1 ----
 blauw "Stap 1 — het Supabase-project koppelen"
-grijs "Koppelt deze map aan project $PROJECT_REF. Wijzigt niets aan je database."
+grijs "Koppelt deze map aan https://$PROJECT_REF.supabase.co"
+grijs "Wijzigt niets aan je database; dat gebeurt pas in stap 2."
 grijs "Je databasewachtwoord wordt gevraagd (of zet SUPABASE_DB_PASSWORD)."
 if bevestig "koppelen?"; then
   supabase link --project-ref "$PROJECT_REF"

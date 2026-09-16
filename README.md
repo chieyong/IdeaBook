@@ -40,6 +40,14 @@ npm install -g netlify-cli
 supabase login
 netlify login
 
+./scripts/infra-opzetten.sh
+```
+
+Het Supabase-project (`jkiipthtwgzpvoagyqte`) zit al als standaard in het script,
+dus zonder argumenten doet het het goede. Een ander project of een andere
+sitenaam geef je mee als argumenten:
+
+```bash
 ./scripts/infra-opzetten.sh <supabase-project-ref> [netlify-site-naam]
 ```
 
@@ -50,10 +58,8 @@ vanuit `supabase/config.toml` → publieke sleutel ophalen → Netlify-site aanm
 → deployen. De `service_role` key wordt nergens aangeraakt; die hoort niet in een
 frontend en niet in een Netlify-buildvariabele.
 
-Twee dingen die het script niet zelf kan:
+Eén ding kan het script niet zelf:
 
-- **Het Supabase-project aanmaken** als je er nog geen hebt. Doe dat in het
-  dashboard, of met `supabase projects create vonkenboek --org-id <org> --region eu-central-1`.
 - **De GitHub-koppeling** volledig automatisch leggen: `netlify init` vraagt
   interactief om toegang tot je GitHub-account. Je kunt het ook in de Netlify-UI
   doen onder *Site configuration → Build & deploy → Link repository*.
