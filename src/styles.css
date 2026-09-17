@@ -606,6 +606,11 @@ h2 {
   text-underline-offset: 4px;
 }
 
+.knop-kaal:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 .knop-kaal:hover {
   color: var(--vonk);
 }
@@ -775,6 +780,24 @@ h2 {
 
 .veld:focus {
   border-color: var(--inkt);
+}
+
+/* Veld met een label erboven, zoals de gelabelde waarden in het ontwerp. */
+.veldgroep + .veldgroep {
+  margin-top: 0.9rem;
+}
+
+.veldgroep .stempel {
+  margin-bottom: 0.4rem;
+}
+
+/* Secundaire acties onder een formulier, onder elkaar. */
+.knoprij {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 1.25rem;
 }
 
 .filters {

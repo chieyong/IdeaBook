@@ -14,6 +14,8 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - **Inbox** — alles wat je vangt krijgt status `vonk` en verschijnt op het startscherm.
 - **Overzicht** — alle ideeën, te filteren op type en status.
 - **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
+- **Inloggen met wachtwoord** — je logt in de app zelf in. Een inloglink per mail
+  blijft bestaan als terugval; zie *Waarom een wachtwoord* hieronder.
 - **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
 - Licht en donker thema via `prefers-color-scheme`, mobile-first.
 - **Retro-vormgeving** — brede mono-displayletters, papier-en-inkt palet, omgekeerde panelen.
@@ -99,7 +101,9 @@ staan voor als je het later alsnog wilt automatiseren.
    De anon-key mag in de frontend staan; RLS bewaakt de data. De `service_role`
    key hoort hier nooit in.
 4. **Auth instellen.** *Authentication → Providers → Email*: zet "Email" aan.
-   Magic links werken standaard; wachtwoorden heb je niet nodig.
+   Laat "Confirm email" en wachtwoorden op de standaardinstelling staan — de app
+   gebruikt zowel het wachtwoord (`signInWithPassword`) als de inloglink
+   (`signInWithOtp`) en de herstelmail (`resetPasswordForEmail`).
 5. **Redirect-URL's.** *Authentication → URL Configuration*:
    - `Site URL`: je Netlify-adres, bijvoorbeeld `https://sparkbook-vizcraft.netlify.app`
    - `Redirect URLs`: deze vier toevoegen —
@@ -142,10 +146,10 @@ lokaal testen doe je met `npm run build && npm run preview`.
 
 ```
 src/
-  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld
+  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld, WachtwoordFormulier
   context/      AuthContext (sessie + magic link)
-  lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak
-  pages/        Vangen, Lijst, Detail, Login, Instellen
+  lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak, authfouten
+  pages/        Vangen, Lijst, Detail, Login, Herstel, Account, Instellen
 supabase/
   migrations/   SQL-schema met RLS
 supabase/
@@ -157,6 +161,29 @@ scripts/
   genereer-iconen.mjs   maakt de PWA-iconen opnieuw (geen dependencies nodig)
   infra-opzetten.sh     zet Supabase en Netlify op via de CLI's, stap voor stap
 ```
+
+## Waarom een wachtwoord
+
+Op je telefoon is de app een webapp op je beginscherm, en die heeft op iOS zijn
+eigen opslag — los van Safari. Klik je op een inloglink in je mail, dan opent die
+in Safari en landt de sessie daar. De webapp ziet er niets van en vraagt bij de
+volgende keer openen opnieuw om een link. Daarom logt de app in met een
+wachtwoord: dat vul je in de app zelf in, dus de sessie komt op de goede plek
+terecht en blijft staan.
+
+**De eerste keer.** Je bestaande account heeft nog geen wachtwoord. Twee manieren
+om er een te zetten:
+
+- Ben je ergens nog ingelogd (meestal Safari): ga naar *Account* onderaan en kies
+  er een.
+- Anders: tik op het inlogscherm op *Wachtwoord instellen of vergeten*. Je krijgt
+  een mail; via die link kom je op een scherm waar je een wachtwoord kiest.
+
+Daarna log je in de webapp in met e-mail en wachtwoord. iCloud Sleutelhanger en
+Google Wachtwoordbeheer vullen het in — de velden hebben de juiste
+`autocomplete`-waarden (`email` en `current-password`).
+
+De inloglink blijft bestaan als terugval, onder *Liever een inloglink*.
 
 ## Vormgeving
 
