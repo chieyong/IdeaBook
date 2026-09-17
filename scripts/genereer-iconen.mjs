@@ -1,4 +1,5 @@
-// Genereert de PWA-iconen (een vonk op een warme achtergrond) als PNG.
+// Genereert de PWA-iconen als PNG: het leadermerk uit de intro — een ring met
+// een dradenkruis en een stip in het midden, zoals de aanloop van een filmrol.
 // Draait zonder externe dependencies: `node scripts/genereer-iconen.mjs`
 import { deflateSync } from 'node:zlib'
 import { writeFileSync, mkdirSync } from 'node:fs'
@@ -8,8 +9,9 @@ import { fileURLToPath } from 'node:url'
 const hier = dirname(fileURLToPath(import.meta.url))
 const uit = resolve(hier, '../public/icons')
 
-const ACHTERGROND = [20, 19, 15, 255] // #14130f
-const VONK = [242, 163, 60, 255] // #f2a33c
+const PAPIER = [231, 226, 213, 255] // #e7e2d5
+const INKT = [21, 21, 15, 255] // #15150f
+const VONK = [196, 82, 28, 255] // #c4521c
 
 function crc32(buf) {
   let c
@@ -54,11 +56,30 @@ function schrijfPng(pad, breedte, hoogte, pixels) {
 
 const meng = (onder, boven, a) => Math.round(onder + (boven - onder) * a)
 
-// Vonk = concave vierpuntige ster (superellipse met exponent < 1).
-function vonkDekking(x, y, midden, straal) {
-  const dx = Math.abs(x - midden) / straal
-  const dy = Math.abs(y - midden) / straal
-  return Math.pow(dx, 0.5) + Math.pow(dy, 0.5) <= 1 ? 1 : 0
+// Het leadermerk, in eenheden van de tegel (0..1 vanaf het midden).
+const RING_BUITEN = 0.38
+const RING_BINNEN = 0.30
+const KRUIS_HALVE_DIKTE = 0.028
+const KRUIS_EINDE = 0.5
+const VEEG_STRAAL = 0.285
+const VEEG_HOEK = Math.PI / 2 // een kwartslag: de wijzer die net langs is gekomen
+
+/** Ring + dradenkruis dat tot aan de rand doorloopt, als een pasmerk. */
+function inktDekking(dx, dy) {
+  const afstand = Math.hypot(dx, dy)
+  if (afstand <= RING_BUITEN && afstand >= RING_BINNEN) return 1
+  const horizontaal = Math.abs(dy) <= KRUIS_HALVE_DIKTE && Math.abs(dx) <= KRUIS_EINDE
+  const verticaal = Math.abs(dx) <= KRUIS_HALVE_DIKTE && Math.abs(dy) <= KRUIS_EINDE
+  return horizontaal || verticaal ? 1 : 0
+}
+
+/** De veeg binnen de ring: het kwart dat de wijzer al heeft afgelegd. */
+function veegDekking(dx, dy) {
+  if (Math.hypot(dx, dy) > VEEG_STRAAL) return 0
+  // Hoek vanaf 12 uur, met de klok mee.
+  let hoek = Math.atan2(dx, -dy)
+  if (hoek < 0) hoek += 2 * Math.PI
+  return hoek < VEEG_HOEK ? 1 : 0
 }
 
 function afgerondeHoek(x, y, maat, radius) {
@@ -67,38 +88,38 @@ function afgerondeHoek(x, y, maat, radius) {
   return Math.hypot(x - cx, y - cy) <= radius ? 1 : 0
 }
 
-function maakIcoon(maat, { maskable = false, transparant = false } = {}) {
+function maakIcoon(maat, { maskable = false } = {}) {
   const pixels = Buffer.alloc(maat * maat * 4)
-  const radius = maskable ? maat / 2 : maat * 0.22
-  const straal = maat * (maskable ? 0.3 : 0.38)
+  const radius = maat * 0.22
   const midden = maat / 2
+  // Bij maskable krimpt het merk, zodat het binnen de veilige cirkel blijft.
+  const schaal = maat * (maskable ? 0.78 : 1)
   const stalen = 3
   for (let y = 0; y < maat; y++) {
     for (let x = 0; x < maat; x++) {
       let achter = 0
-      let vonk = 0
+      let inkt = 0
+      let veeg = 0
       for (let sy = 0; sy < stalen; sy++) {
         for (let sx = 0; sx < stalen; sx++) {
-          const px = x + (sx + 0.5) / stalen
-          const py = y + (sy + 0.5) / stalen
-          achter += maskable ? 1 : afgerondeHoek(px, py, maat, radius)
-          vonk += vonkDekking(px, py, midden, straal)
+          const dx = (x + (sx + 0.5) / stalen - midden) / schaal
+          const dy = (y + (sy + 0.5) / stalen - midden) / schaal
+          achter += maskable ? 1 : afgerondeHoek(x + (sx + 0.5) / stalen, y + (sy + 0.5) / stalen, maat, radius)
+          inkt += inktDekking(dx, dy)
+          veeg += veegDekking(dx, dy)
         }
       }
-      achter /= stalen * stalen
-      vonk /= stalen * stalen
+      const n = stalen * stalen
+      achter /= n
+      inkt /= n
+      veeg /= n
+      // Eerst papier, dan de veeg, dan de inkt van ring en kruis daar bovenop.
       const i = (y * maat + x) * 4
-      if (transparant) {
-        pixels[i] = VONK[0]
-        pixels[i + 1] = VONK[1]
-        pixels[i + 2] = VONK[2]
-        pixels[i + 3] = Math.round(255 * vonk)
-      } else {
-        pixels[i] = meng(ACHTERGROND[0], VONK[0], vonk)
-        pixels[i + 1] = meng(ACHTERGROND[1], VONK[1], vonk)
-        pixels[i + 2] = meng(ACHTERGROND[2], VONK[2], vonk)
-        pixels[i + 3] = Math.round(255 * achter)
+      for (let k = 0; k < 3; k++) {
+        const metVeeg = meng(PAPIER[k], VONK[k], veeg)
+        pixels[i + k] = meng(metVeeg, INKT[k], inkt)
       }
+      pixels[i + 3] = Math.round(255 * achter)
     }
   }
   return pixels

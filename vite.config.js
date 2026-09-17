@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/favicon-32.png', 'icons/apple-touch-icon.png'],
       manifest: {
-        name: 'Vonkenboek',
-        short_name: 'Vonken',
+        name: 'SparkBook',
+        short_name: 'SparkBook',
         description: 'Vang je ideeën binnen vijf seconden, orden ze later.',
         lang: 'nl',
         start_url: '/',

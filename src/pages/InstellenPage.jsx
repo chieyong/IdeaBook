@@ -9,7 +9,7 @@ export default function InstellenPage() {
           <span className="vaag">klaar</span>
         </h1>
         <p className="uitleg" style={{ marginTop: '1rem' }}>
-          Vonkenboek mist nog de verbinding met Supabase. Maak een <code>.env</code> aan (kopie van{' '}
+          SparkBook mist nog de verbinding met Supabase. Maak een <code>.env</code> aan (kopie van{' '}
           <code>.env.example</code>) met:
         </p>
         <pre className="veld" style={{ overflowX: 'auto', fontSize: '0.7rem' }}>

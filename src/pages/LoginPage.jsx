@@ -46,8 +46,8 @@ export default function LoginPage() {
       <div className="paneel">
         <span className="stempel">Toegang / 000</span>
         <h1 className="hero-titel">
-          <span>Vonken</span>
-          <span className="vaag">boek</span>
+          <span>Spark</span>
+          <span className="vaag">Book</span>
         </h1>
         <p className="uitleg" style={{ marginTop: '1rem' }}>
           Vang je ideeën binnen vijf seconden. Ordenen komt later.

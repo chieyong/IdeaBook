@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Zet de infrastructuur voor Vonkenboek op met de Supabase CLI en de Netlify CLI.
+# Zet de infrastructuur voor SparkBook op met de Supabase CLI en de Netlify CLI.
 # Draai dit op je eigen machine (de browser-login werkt niet in een container).
 #
 #   ./scripts/infra-opzetten.sh [supabase-project-ref] [netlify-site-naam]
@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-# Het Supabase-project van Vonkenboek: https://jkiipthtwgzpvoagyqte.supabase.co
+# Het Supabase-project van SparkBook: https://jkiipthtwgzpvoagyqte.supabase.co
 # Een project-ref is niet geheim; hij zit ook in de frontend-bundel.
 STANDAARD_REF="jkiipthtwgzpvoagyqte"
 
