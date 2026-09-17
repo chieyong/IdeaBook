@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { statusLabel, typeCode, typeLabel } from '../lib/constanten'
+import { useTaal } from '../context/TaalContext'
+import { typeCode } from '../lib/constanten'
 import { korteDatum, sindsdien, volledigeDatum } from '../lib/datum'
 import { haalFragmenten, haalIdee, voegFragmentToe } from '../lib/ideeen'
 
 export default function DetailPage() {
   const { id } = useParams()
   const { userId } = useAuth()
+  const { t, taal } = useTaal()
   const [idee, setIdee] = useState(null)
   const [fragmenten, setFragmenten] = useState([])
   const [bezig, setBezig] = useState(true)
@@ -48,37 +50,39 @@ export default function DetailPage() {
     }
   }
 
-  if (bezig) return <p className="hint">Laden…</p>
-  if (!idee) return <p className="fout">{fout ?? 'Dit idee bestaat niet (meer).'}</p>
+  if (bezig) return <p className="hint">{t('algemeen.laden')}</p>
+  if (!idee) return <p className="fout">{fout ?? t('detail.weg')}</p>
 
   return (
     <>
       <Link to="/ideeen" className="terug">
-        ← Archief
+        {t('detail.terug')}
       </Link>
 
       <header className="hero">
-        <span className="stempel">{typeCode(idee.type)} · Idee</span>
+        <span className="stempel">
+          {typeCode(idee.type)} · {t('detail.idee')}
+        </span>
         <h1 className="hero-titel hero-titel-klein">{idee.titel}</h1>
 
         {/* Typeplaatje: de kerngegevens van dit idee in één oogopslag. */}
         <dl className="specs">
           <div className="spec">
-            <dt className="stempel">Status</dt>
-            <dd className="spec-waarde">{statusLabel(idee.status)}</dd>
+            <dt className="stempel">{t('detail.status')}</dt>
+            <dd className="spec-waarde">{t(`status.${idee.status}`)}</dd>
           </div>
           <div className="spec">
-            <dt className="stempel">Type</dt>
-            <dd className="spec-waarde">{typeLabel(idee.type)}</dd>
+            <dt className="stempel">{t('detail.type')}</dt>
+            <dd className="spec-waarde">{t(`type.${idee.type}`)}</dd>
           </div>
           <div className="spec">
-            <dt className="stempel">Fragmenten</dt>
+            <dt className="stempel">{t('detail.fragmenten')}</dt>
             <dd className="spec-waarde">{String(fragmenten.length).padStart(2, '0')}</dd>
           </div>
           <div className="spec">
-            <dt className="stempel">Gevangen</dt>
-            <dd className="spec-waarde" title={volledigeDatum(idee.created_at)}>
-              {korteDatum(idee.created_at)}
+            <dt className="stempel">{t('detail.gevangen')}</dt>
+            <dd className="spec-waarde" title={volledigeDatum(idee.created_at, taal)}>
+              {korteDatum(idee.created_at, taal)}
             </dd>
           </div>
         </dl>
@@ -86,8 +90,8 @@ export default function DetailPage() {
 
       <form onSubmit={bewaarFragment} className="vangen">
         <div className="vangen-kop">
-          <span className="stempel">Nieuw fragment</span>
-          <span className="stempel vangen-rec">Rec</span>
+          <span className="stempel">{t('detail.nieuwFragment')}</span>
+          <span className="stempel vangen-rec">{t('kaart.rec')}</span>
         </div>
         <textarea
           className="vangen-zin vangen-zin-vrij"
@@ -96,15 +100,14 @@ export default function DetailPage() {
           onKeyDown={(event) => {
             if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) bewaarFragment(event)
           }}
-          placeholder="Een gedachte, een link, een scène…"
-          aria-label="Nieuw fragment"
+          placeholder={t('detail.fragmentPlaceholder')}
+          aria-label={t('detail.nieuwFragment')}
           rows={3}
           style={{ marginTop: '0.3rem' }}
         />
-        <div className="vangen-actie">
-          <span className="hint">Losse fragmenten, geen groot tekstveld</span>
+        <div className="vangen-actie vangen-actie-rechts">
           <button className="knop knop-rond" type="submit" disabled={!nieuw.trim() || bewaart}>
-            {bewaart ? '…' : '— Voeg toe'}
+            {bewaart ? '…' : t('detail.voegToe')}
           </button>
         </div>
       </form>
@@ -113,11 +116,11 @@ export default function DetailPage() {
 
       <section className="sectie">
         <div className="sectie-kop">
-          <h2>Tijdlijn</h2>
+          <h2>{t('detail.tijdlijn')}</h2>
           <span className="hint">{String(fragmenten.length).padStart(2, '0')}</span>
         </div>
         {fragmenten.length === 0 ? (
-          <p className="leeg">Nog niets uitgewerkt — voeg je eerste fragment toe</p>
+          <p className="leeg">{t('detail.leeg')}</p>
         ) : (
           <ul className="tijdlijn">
             {fragmenten.map((fragment) => (
@@ -125,9 +128,9 @@ export default function DetailPage() {
                 <time
                   className="fragment-tijd"
                   dateTime={fragment.created_at}
-                  title={volledigeDatum(fragment.created_at)}
+                  title={volledigeDatum(fragment.created_at, taal)}
                 >
-                  {sindsdien(fragment.created_at)}
+                  {sindsdien(fragment.created_at, taal)}
                 </time>
                 {fragment.inhoud && <p className="fragment-inhoud">{fragment.inhoud}</p>}
                 {fragment.afbeelding_url && (

@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { MINIMALE_WACHTWOORDLENGTE, useAuth } from '../context/AuthContext'
+import { useTaal } from '../context/TaalContext'
 
 /**
  * Een nieuw wachtwoord kiezen. Gebruikt op twee plekken: na een herstelmail en
  * op de accountpagina. Twee velden, zodat een typefout je niet buitensluit.
  */
-export default function WachtwoordFormulier({ knoptekst = 'Bewaar wachtwoord', onKlaar }) {
+export default function WachtwoordFormulier({ knoptekst, onKlaar }) {
   const { zetWachtwoord } = useAuth()
+  const { t } = useTaal()
   const [wachtwoord, setWachtwoord] = useState('')
   const [herhaling, setHerhaling] = useState('')
   const [bezig, setBezig] = useState(false)
@@ -36,11 +38,18 @@ export default function WachtwoordFormulier({ knoptekst = 'Bewaar wachtwoord', o
     }
   }
 
+  // Eén regel die zegt wat er nog mis is, in plaats van losse foutmeldingen.
+  const stand = teKort
+    ? t('ww.teKort')
+    : verschilt
+      ? t('ww.verschilt')
+      : t('ww.minstens', { n: MINIMALE_WACHTWOORDLENGTE })
+
   return (
     <form onSubmit={versturen}>
       <div className="veldgroep">
         <label className="stempel" htmlFor="nieuw-wachtwoord">
-          Nieuw wachtwoord
+          {t('ww.nieuw')}
         </label>
         <input
           className="veld"
@@ -60,7 +69,7 @@ export default function WachtwoordFormulier({ knoptekst = 'Bewaar wachtwoord', o
 
       <div className="veldgroep">
         <label className="stempel" htmlFor="herhaal-wachtwoord">
-          Nog een keer
+          {t('ww.herhaal')}
         </label>
         <input
           className="veld"
@@ -77,17 +86,14 @@ export default function WachtwoordFormulier({ knoptekst = 'Bewaar wachtwoord', o
         />
       </div>
 
-      <p className="hint" style={{ marginTop: '0.7rem' }}>
-        Minstens {MINIMALE_WACHTWOORDLENGTE} tekens
-      </p>
+      <div className="vangen-actie">
+        <span className="hint">{stand}</span>
+        <button className="knop" type="submit" disabled={!magVerzenden}>
+          {bezig ? t('ww.bewaren') : (knoptekst ?? t('ww.bewaar'))}
+        </button>
+      </div>
 
-      <button className="knop" type="submit" disabled={!magVerzenden} style={{ marginTop: '0.8rem', width: '100%' }}>
-        {bezig ? 'Bewaren…' : knoptekst}
-      </button>
-
-      {teKort && <p className="fout">Nog te kort: minstens {MINIMALE_WACHTWOORDLENGTE} tekens.</p>}
-      {verschilt && <p className="fout">De twee wachtwoorden zijn niet gelijk.</p>}
-      {gelukt && <p className="melding">Je wachtwoord staat klaar.</p>}
+      {gelukt && <p className="melding">{t('ww.gelukt')}</p>}
       {fout && <p className="fout">{fout}</p>}
     </form>
   )

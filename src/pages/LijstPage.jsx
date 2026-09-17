@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import IdeeKaart from '../components/IdeeKaart'
+import { useTaal } from '../context/TaalContext'
 import { STATUSSEN, TYPES } from '../lib/constanten'
 import { haalIdeeen } from '../lib/ideeen'
 
 export default function LijstPage() {
+  const { t } = useTaal()
   const [type, setType] = useState('alle')
   const [status, setStatus] = useState('alle')
   const [ideeen, setIdeeen] = useState([])
@@ -29,50 +31,49 @@ export default function LijstPage() {
   return (
     <>
       <header className="hero">
-        <span className="stempel">Archief / 002</span>
         <h1 className="hero-titel">
-          <span>Alle</span>
-          <span className="vaag">ideeën</span>
+          <span>{t('lijst.kop1')}</span>
+          <span className="vaag">{t('lijst.kop2')}</span>
         </h1>
         <div className="teller">
           <span className="teller-getal">{bezig ? '··' : String(ideeen.length).padStart(2, '0')}</span>
-          <span className="stempel">{ideeen.length === 1 ? 'idee gevonden' : 'ideeën gevonden'}</span>
+          <span className="stempel">{t('lijst.eenheid')}</span>
         </div>
       </header>
 
       <div className="filters">
         <div className="filterrij">
-          <span className="stempel">Type</span>
-          <div className="chips" role="group" aria-label="Filter op type">
+          <span className="stempel">{t('filter.type')}</span>
+          <div className="chips" role="group" aria-label={t('filter.type')}>
             <button className="chip" aria-pressed={type === 'alle'} onClick={() => setType('alle')}>
-              Alle
+              {t('filter.alle')}
             </button>
-            {TYPES.map((t) => (
+            {TYPES.map((s) => (
               <button
-                key={t.waarde}
+                key={s.waarde}
                 className="chip"
-                aria-pressed={type === t.waarde}
-                onClick={() => setType(t.waarde)}
+                aria-pressed={type === s.waarde}
+                onClick={() => setType(s.waarde)}
               >
-                {t.label}
+                {t(`type.${s.waarde}`)}
               </button>
             ))}
           </div>
         </div>
         <div className="filterrij">
-          <span className="stempel">Status</span>
-          <div className="chips" role="group" aria-label="Filter op status">
+          <span className="stempel">{t('filter.status')}</span>
+          <div className="chips" role="group" aria-label={t('filter.status')}>
             <button className="chip" aria-pressed={status === 'alle'} onClick={() => setStatus('alle')}>
-              Actief
+              {t('filter.actief')}
             </button>
             {STATUSSEN.map((s) => (
               <button
-                key={s.waarde}
+                key={s}
                 className="chip"
-                aria-pressed={status === s.waarde}
-                onClick={() => setStatus(s.waarde)}
+                aria-pressed={status === s}
+                onClick={() => setStatus(s)}
               >
-                {s.label}
+                {t(`status.${s}`)}
               </button>
             ))}
           </div>
@@ -80,7 +81,7 @@ export default function LijstPage() {
       </div>
 
       {fout && <p className="fout">{fout}</p>}
-      {!bezig && ideeen.length === 0 && !fout && <p className="leeg">Geen ideeën met dit filter</p>}
+      {!bezig && ideeen.length === 0 && !fout && <p className="leeg">{t('lijst.leeg')}</p>}
 
       <ul className="lijst">
         {ideeen.map((idee, i) => (

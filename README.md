@@ -16,6 +16,8 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
 - **Inloggen met wachtwoord** — je logt in de app zelf in. Een inloglink per mail
   blijft bestaan als terugval; zie *Waarom een wachtwoord* hieronder.
+- **Nederlands of Engels** — te wisselen met NL | EN in de merkbalk; de keuze
+  blijft bewaard en zonder keuze volgt de app de taal van je apparaat.
 - **Aanloop** — een korte filmleader bij het openen: dradenkruis, veeg en aftelling.
 - **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
 - Licht en donker thema via `prefers-color-scheme`, mobile-first.
@@ -147,9 +149,9 @@ lokaal testen doe je met `npm run build && npm run preview`.
 
 ```
 src/
-  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld, WachtwoordFormulier, Leader
-  context/      AuthContext (sessie + magic link)
-  lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak, authfouten
+  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld, WachtwoordFormulier, Leader, TaalKnop
+  context/      AuthContext (sessie + inloggen), TaalContext (taalkeuze)
+  lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak, authfouten, teksten
   pages/        Vangen, Lijst, Detail, Login, Herstel, Account, Instellen
 supabase/
   migrations/   SQL-schema met RLS
@@ -185,6 +187,22 @@ Google Wachtwoordbeheer vullen het in — de velden hebben de juiste
 `autocomplete`-waarden (`email` en `current-password`).
 
 De inloglink blijft bestaan als terugval, onder *Liever een inloglink*.
+
+## Taal
+
+Alle zichtbare tekst staat in `src/lib/teksten.js`, per taal, met platte sleutels
+als `vangen.inbox`. Componenten halen hem op met `t('sleutel')` uit
+`useTaal()`. Geen bibliotheek: het zijn twee talen en een handvol sleutels.
+
+- De keuze staat in `localStorage` en valt anders terug op `navigator.language`.
+- `document.documentElement.lang` volgt mee, en datums ook: `datum.js` maakt zijn
+  `Intl`-formatters per taal (`nl-NL` en `en-GB`).
+- Statussen en types staan als waarde in de database (`vonk`, `app`) en krijgen
+  hun label uit de vertaaltabel. De opgeslagen waarden veranderen dus nooit mee.
+- Ook de foutmeldingen van Supabase worden vertaald, in `authfouten.js`.
+
+Een derde taal toevoegen is: een blok bijzetten in `teksten.js`, de code in
+`TALEN` en `LOCALES` zetten, klaar.
 
 ## Vormgeving
 
