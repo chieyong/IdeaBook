@@ -1,17 +1,15 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { supabase, isGeconfigureerd } from '../lib/supabase'
 import { vertaalAuthFout } from '../lib/authfouten'
+import { useTaal } from './TaalContext'
 
 const AuthContext = createContext(null)
 
 /** Minimumlengte die we zelf afdwingen; Supabase staat standaard 6 toe. */
 export const MINIMALE_WACHTWOORDLENGTE = 8
 
-function stukLopen(fout) {
-  if (fout) throw new Error(vertaalAuthFout(fout))
-}
-
 export function AuthProvider({ children }) {
+  const { taal } = useTaal()
   const [sessie, setSessie] = useState(null)
   const [bezig, setBezig] = useState(isGeconfigureerd)
   // Gezet als je via een herstelmail binnenkomt: dan eerst een nieuw wachtwoord.
@@ -40,8 +38,12 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const waarde = useMemo(
-    () => ({
+  const waarde = useMemo(() => {
+    const stukLopen = (fout) => {
+      if (fout) throw new Error(vertaalAuthFout(fout, taal))
+    }
+
+    return {
       sessie,
       gebruiker: sessie?.user ?? null,
       userId: sessie?.user?.id ?? null,
@@ -81,9 +83,8 @@ export function AuthProvider({ children }) {
       async logUit() {
         await supabase.auth.signOut()
       },
-    }),
-    [sessie, bezig, herstelModus],
-  )
+    }
+  }, [sessie, bezig, herstelModus, taal])
 
   return <AuthContext.Provider value={waarde}>{children}</AuthContext.Provider>
 }

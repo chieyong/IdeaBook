@@ -1,23 +1,26 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Balk from './components/Balk'
 import Leader from './components/Leader'
+import TaalKnop from './components/TaalKnop'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { TaalProvider, useTaal } from './context/TaalContext'
 import AccountPage from './pages/AccountPage'
 import DetailPage from './pages/DetailPage'
-import InstellenPage from './pages/InstellenPage'
 import HerstelPage from './pages/HerstelPage'
+import InstellenPage from './pages/InstellenPage'
 import LijstPage from './pages/LijstPage'
 import LoginPage from './pages/LoginPage'
 import VangenPage from './pages/VangenPage'
 
 function Binnenkant() {
-  const { isGeconfigureerd, bezig, sessie, herstelModus, gebruiker } = useAuth()
+  const { isGeconfigureerd, bezig, sessie, herstelModus } = useAuth()
+  const { t } = useTaal()
 
   if (!isGeconfigureerd) return <InstellenPage />
   if (bezig)
     return (
       <div className="midden">
-        <p className="hint">Even geduld…</p>
+        <p className="hint">{t('algemeen.geduld')}</p>
       </div>
     )
   // Via een herstelmail binnengekomen: eerst een wachtwoord, dan pas de app.
@@ -31,7 +34,7 @@ function Binnenkant() {
           <span className="merk">
             SparkBook<span className="merk-punt">.</span>
           </span>
-          <span className="stempel">Est. 1 idee / 5 sec</span>
+          <TaalKnop />
         </header>
 
         <main className="inhoud">
@@ -44,9 +47,8 @@ function Binnenkant() {
           </Routes>
 
           <div className="voetregel">
-            <span className="stempel">{gebruiker.email}</span>
             <Link className="knop-kaal" to="/account">
-              Account
+              {t('account.account')}
             </Link>
           </div>
         </main>
@@ -59,9 +61,11 @@ function Binnenkant() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Leader />
-      <Binnenkant />
-    </AuthProvider>
+    <TaalProvider>
+      <AuthProvider>
+        <Leader />
+        <Binnenkant />
+      </AuthProvider>
+    </TaalProvider>
   )
 }

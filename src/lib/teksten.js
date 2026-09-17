@@ -1,0 +1,215 @@
+/**
+ * Alle zichtbare tekst, per taal. Bewust kort gehouden: de app legt zichzelf
+ * niet uit, hij laat zich gebruiken.
+ *
+ * Sleutels zijn plat en met punten gegroepeerd. {n} wordt vervangen door een
+ * meegegeven waarde.
+ */
+export const TALEN = ['nl', 'en']
+
+export const LOCALES = { nl: 'nl-NL', en: 'en-GB' }
+
+const nl = {
+  'nav.vangen': 'Vangen',
+  'nav.ideeen': 'Ideeën',
+  'algemeen.laden': 'Laden…',
+  'algemeen.geduld': 'Even geduld…',
+
+  'vangen.kop1': 'Vang',
+  'vangen.kop2': 'elke',
+  'vangen.kop3': 'vonk',
+  'vangen.inbox': 'Inbox',
+  'vangen.alles': 'Alles bekijken',
+  'vangen.leeg': 'Nog niets',
+
+  'kaart.nieuw': 'Nieuw idee',
+  'kaart.bestaand': 'Bestaand idee',
+  'kaart.rec': 'Rec',
+  'kaart.type': 'Type',
+  'kaart.zoeken': 'Zoeken',
+  'kaart.titelNieuw': 'Wat schiet je te binnen?',
+  'kaart.titelBestaand': 'Wat wil je toevoegen?',
+  'kaart.zin': 'Eén zin erbij (optioneel)',
+  'kaart.enter': 'Enter bewaart',
+  'kaart.vang': '— Vang',
+  'kaart.zoekPlaceholder': 'Zoek op titel…',
+  'kaart.nietsGevonden': 'Niets gevonden',
+  'kaart.gevangen': 'Gevangen:',
+  'kaart.toegevoegd': 'Toegevoegd aan',
+  'kaart.geopend': 'Geopend:',
+
+  'lijst.kop1': 'Alle',
+  'lijst.kop2': 'ideeën',
+  'lijst.eenheid': 'ideeën',
+  'lijst.leeg': 'Geen ideeën met dit filter',
+  'filter.type': 'Type',
+  'filter.status': 'Status',
+  'filter.alle': 'Alle',
+  'filter.actief': 'Actief',
+
+  'detail.terug': '← Archief',
+  'detail.idee': 'Idee',
+  'detail.status': 'Status',
+  'detail.type': 'Type',
+  'detail.fragmenten': 'Fragmenten',
+  'detail.gevangen': 'Gevangen',
+  'detail.nieuwFragment': 'Nieuw fragment',
+  'detail.fragmentPlaceholder': 'Een gedachte, een link…',
+  'detail.voegToe': '— Voeg toe',
+  'detail.tijdlijn': 'Tijdlijn',
+  'detail.leeg': 'Nog niets',
+  'detail.weg': 'Dit idee bestaat niet meer.',
+
+  'account.terug': '← Vangen',
+  'account.wachtwoord': 'Wachtwoord',
+  'account.uitloggen': 'Uitloggen',
+  'account.account': 'Account',
+
+  'ww.nieuw': 'Nieuw wachtwoord',
+  'ww.herhaal': 'Nog een keer',
+  'ww.minstens': 'Minstens {n} tekens',
+  'ww.bewaar': 'Bewaar',
+  'ww.bewaren': 'Bewaren…',
+  'ww.gaVerder': 'Bewaar en ga verder',
+  'ww.teKort': 'Te kort',
+  'ww.verschilt': 'Niet gelijk',
+  'ww.gelukt': 'Wachtwoord bewaard',
+
+  'login.tagline': 'Vang je ideeën binnen vijf seconden.',
+  'login.email': 'E-mailadres',
+  'login.wachtwoord': 'Wachtwoord',
+  'login.inloggen': 'Log in',
+  'login.bezig': 'Inloggen…',
+  'login.vergeten': 'Wachtwoord vergeten',
+  'login.link': 'Stuur een inloglink',
+  'login.vulEmail': 'Vul eerst je e-mailadres in.',
+  'login.herstelVerstuurd': 'Check je mail om een wachtwoord in te stellen.',
+  'login.linkVerstuurd': 'Check je mail voor de inloglink.',
+
+  'herstel.kop1': 'Kies je',
+  'herstel.kop2': 'wachtwoord',
+
+  'instellen.kop1': 'Bijna',
+  'instellen.kop2': 'klaar',
+  'instellen.uitleg': 'SparkBook mist de verbinding met Supabase. Zet dit in je .env:',
+  'instellen.netlify': 'Op Netlify staan dezelfde twee bij Environment variables.',
+
+  'type.app': 'App',
+  'type.film': 'Film',
+  'type.project': 'Project',
+  'type.overig': 'Overig',
+
+  'status.vonk': 'Vonk',
+  'status.verkennen': 'Verkennen',
+  'status.uitwerken': 'Uitwerken',
+  'status.geparkeerd': 'Geparkeerd',
+  'status.gedaan': 'Gedaan',
+  'status.kerkhof': 'Kerkhof',
+}
+
+const en = {
+  'nav.vangen': 'Capture',
+  'nav.ideeen': 'Ideas',
+  'algemeen.laden': 'Loading…',
+  'algemeen.geduld': 'One moment…',
+
+  'vangen.kop1': 'Catch',
+  'vangen.kop2': 'every',
+  'vangen.kop3': 'spark',
+  'vangen.inbox': 'Inbox',
+  'vangen.alles': 'View all',
+  'vangen.leeg': 'Nothing yet',
+
+  'kaart.nieuw': 'New idea',
+  'kaart.bestaand': 'Existing idea',
+  'kaart.rec': 'Rec',
+  'kaart.type': 'Type',
+  'kaart.zoeken': 'Search',
+  'kaart.titelNieuw': 'What just came to mind?',
+  'kaart.titelBestaand': 'What do you want to add?',
+  'kaart.zin': 'One more line (optional)',
+  'kaart.enter': 'Enter saves',
+  'kaart.vang': '— Catch',
+  'kaart.zoekPlaceholder': 'Search by title…',
+  'kaart.nietsGevonden': 'Nothing found',
+  'kaart.gevangen': 'Caught:',
+  'kaart.toegevoegd': 'Added to',
+  'kaart.geopend': 'Opened:',
+
+  'lijst.kop1': 'All',
+  'lijst.kop2': 'ideas',
+  'lijst.eenheid': 'ideas',
+  'lijst.leeg': 'No ideas match this filter',
+  'filter.type': 'Type',
+  'filter.status': 'Status',
+  'filter.alle': 'All',
+  'filter.actief': 'Active',
+
+  'detail.terug': '← Archive',
+  'detail.idee': 'Idea',
+  'detail.status': 'Status',
+  'detail.type': 'Type',
+  'detail.fragmenten': 'Fragments',
+  'detail.gevangen': 'Caught',
+  'detail.nieuwFragment': 'New fragment',
+  'detail.fragmentPlaceholder': 'A thought, a link…',
+  'detail.voegToe': '— Add',
+  'detail.tijdlijn': 'Timeline',
+  'detail.leeg': 'Nothing yet',
+  'detail.weg': 'This idea no longer exists.',
+
+  'account.terug': '← Capture',
+  'account.wachtwoord': 'Password',
+  'account.uitloggen': 'Log out',
+  'account.account': 'Account',
+
+  'ww.nieuw': 'New password',
+  'ww.herhaal': 'Once more',
+  'ww.minstens': 'At least {n} characters',
+  'ww.bewaar': 'Save',
+  'ww.bewaren': 'Saving…',
+  'ww.gaVerder': 'Save and continue',
+  'ww.teKort': 'Too short',
+  'ww.verschilt': "Doesn't match",
+  'ww.gelukt': 'Password saved',
+
+  'login.tagline': 'Catch your ideas in five seconds.',
+  'login.email': 'Email',
+  'login.wachtwoord': 'Password',
+  'login.inloggen': 'Log in',
+  'login.bezig': 'Logging in…',
+  'login.vergeten': 'Forgot password',
+  'login.link': 'Email me a link',
+  'login.vulEmail': 'Enter your email first.',
+  'login.herstelVerstuurd': 'Check your email to set a password.',
+  'login.linkVerstuurd': 'Check your email for the link.',
+
+  'herstel.kop1': 'Choose your',
+  'herstel.kop2': 'password',
+
+  'instellen.kop1': 'Almost',
+  'instellen.kop2': 'there',
+  'instellen.uitleg': 'SparkBook has no Supabase connection yet. Put this in your .env:',
+  'instellen.netlify': 'On Netlify the same two go under Environment variables.',
+
+  'type.app': 'App',
+  'type.film': 'Film',
+  'type.project': 'Project',
+  'type.overig': 'Other',
+
+  'status.vonk': 'Spark',
+  'status.verkennen': 'Exploring',
+  'status.uitwerken': 'Developing',
+  'status.geparkeerd': 'Parked',
+  'status.gedaan': 'Done',
+  'status.kerkhof': 'Graveyard',
+}
+
+export const TEKSTEN = { nl, en }
+
+/** Zoekt een tekst op en vult {n}-achtige plekken in. */
+export function vertaal(taal, sleutel, waarden) {
+  const tekst = TEKSTEN[taal]?.[sleutel] ?? TEKSTEN.nl[sleutel] ?? sleutel
+  if (!waarden) return tekst
+  return tekst.replace(/\{(\w+)\}/g, (heel, naam) => waarden[naam] ?? heel)
+}

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import GroeiVeld from './GroeiVeld'
 import TypeChips from './TypeChips'
 import { useAuth } from '../context/AuthContext'
-import { typeCode, typeLabel } from '../lib/constanten'
+import { useTaal } from '../context/TaalContext'
+import { typeCode } from '../lib/constanten'
 import { vangIdee, voegFragmentToe, zoekIdeeen } from '../lib/ideeen'
 
 /**
@@ -12,6 +13,7 @@ import { vangIdee, voegFragmentToe, zoekIdeeen } from '../lib/ideeen'
  */
 export default function VangenKaart({ onOpgeslagen }) {
   const { userId } = useAuth()
+  const { t } = useTaal()
   const [modus, setModus] = useState('nieuw')
   const [tekst, setTekst] = useState('')
   const [zin, setZin] = useState('')
@@ -35,7 +37,7 @@ export default function VangenKaart({ onOpgeslagen }) {
   useEffect(() => {
     if (isNieuw || !zoekterm.trim()) {
       setResultaten([])
-      return
+      return undefined
     }
     setZoekt(true)
     const timer = setTimeout(async () => {
@@ -66,7 +68,7 @@ export default function VangenKaart({ onOpgeslagen }) {
     setFout(null)
     try {
       const idee = await vangIdee({ userId, titel: tekst, eersteZin: zin, type })
-      setGelukt({ tekst: 'Gevangen:', idee })
+      setGelukt({ tekst: t('kaart.gevangen'), idee })
       leegmaken()
       onOpgeslagen?.()
     } catch (error) {
@@ -83,7 +85,7 @@ export default function VangenKaart({ onOpgeslagen }) {
     setFout(null)
     try {
       if (inhoud) await voegFragmentToe({ userId, ideaId: idee.id, inhoud })
-      setGelukt({ tekst: inhoud ? 'Toegevoegd aan' : 'Geopend:', idee })
+      setGelukt({ tekst: inhoud ? t('kaart.toegevoegd') : t('kaart.geopend'), idee })
       leegmaken()
       onOpgeslagen?.()
     } catch (error) {
@@ -109,8 +111,8 @@ export default function VangenKaart({ onOpgeslagen }) {
   return (
     <div className="vangen">
       <div className="vangen-kop">
-        <span className="stempel">{isNieuw ? 'Nieuw idee' : 'Bestaand idee'}</span>
-        <span className="stempel vangen-rec">Rec</span>
+        <span className="stempel">{isNieuw ? t('kaart.nieuw') : t('kaart.bestaand')}</span>
+        <span className="stempel vangen-rec">{t('kaart.rec')}</span>
       </div>
 
       <GroeiVeld
@@ -122,8 +124,8 @@ export default function VangenKaart({ onOpgeslagen }) {
           setGelukt(null)
         }}
         onKeyDown={bijToets}
-        placeholder={isNieuw ? 'Wat schiet je te binnen?' : 'Wat wil je toevoegen?'}
-        aria-label={isNieuw ? 'Titel van je idee' : 'Tekst van je fragment'}
+        placeholder={isNieuw ? t('kaart.titelNieuw') : t('kaart.titelBestaand')}
+        aria-label={isNieuw ? t('kaart.nieuw') : t('kaart.bestaand')}
         enterKeyHint="done"
         autoComplete="off"
       />
@@ -140,34 +142,34 @@ export default function VangenKaart({ onOpgeslagen }) {
                 bewaarNieuw()
               }
             }}
-            placeholder="Eén zin erbij (optioneel)"
-            aria-label="Eén zin erbij, optioneel"
+            placeholder={t('kaart.zin')}
+            aria-label={t('kaart.zin')}
           />
           <div className="vangen-voet">
-            <span className="stempel vangen-veldnaam">Type</span>
+            <span className="stempel vangen-veldnaam">{t('kaart.type')}</span>
             <TypeChips waarde={type} onKies={setType} />
           </div>
           <div className="vangen-actie">
-            <span className="hint">Enter bewaart meteen</span>
+            <span className="hint">{t('kaart.enter')}</span>
             <button
               className="knop knop-rond"
               type="button"
               onClick={bewaarNieuw}
               disabled={!tekst.trim() || bezig}
             >
-              {bezig ? '…' : '— Vang'}
+              {bezig ? '…' : t('kaart.vang')}
             </button>
           </div>
         </>
       ) : (
         <div className="vangen-voet">
-          <span className="stempel vangen-veldnaam">Zoeken</span>
+          <span className="stempel vangen-veldnaam">{t('kaart.zoeken')}</span>
           <input
             className="veld"
             value={zoekterm}
             onChange={(event) => setZoekterm(event.target.value)}
-            placeholder="Zoek een bestaand idee op titel…"
-            aria-label="Zoek een bestaand idee"
+            placeholder={t('kaart.zoekPlaceholder')}
+            aria-label={t('kaart.zoeken')}
             autoComplete="off"
           />
           {zoekterm.trim() && (
@@ -178,15 +180,11 @@ export default function VangenKaart({ onOpgeslagen }) {
                     <span className="idee-index" aria-hidden="true">
                       {typeCode(idee.type)}
                     </span>
-                    <span>
-                      {idee.titel}
-                      <br />
-                      <span className="hint">{typeLabel(idee.type)}</span>
-                    </span>
+                    <span>{idee.titel}</span>
                   </button>
                 </li>
               ))}
-              {!zoekt && resultaten.length === 0 && <li className="hint">Niets gevonden</li>}
+              {!zoekt && resultaten.length === 0 && <li className="hint">{t('kaart.nietsGevonden')}</li>}
             </ul>
           )}
         </div>
@@ -194,7 +192,7 @@ export default function VangenKaart({ onOpgeslagen }) {
 
       <div className="vangen-wissel">
         <button className="knop-kaal" type="button" onClick={wissel}>
-          {isNieuw ? 'Toevoegen aan bestaand idee' : 'Toch een nieuw idee'}
+          {isNieuw ? t('kaart.bestaand') : t('kaart.nieuw')}
         </button>
       </div>
 

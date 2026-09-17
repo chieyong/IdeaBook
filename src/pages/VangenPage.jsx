@@ -2,9 +2,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import VangenKaart from '../components/VangenKaart'
 import IdeeKaart from '../components/IdeeKaart'
+import { useTaal } from '../context/TaalContext'
 import { haalInbox } from '../lib/ideeen'
 
 export default function VangenPage() {
+  const { t } = useTaal()
   const [inbox, setInbox] = useState([])
   const [bezig, setBezig] = useState(true)
   const [fout, setFout] = useState(null)
@@ -26,29 +28,23 @@ export default function VangenPage() {
 
   return (
     <>
-      <header className="hero">
-        <span className="stempel">Vangen / 001</span>
-        <h1 className="hero-titel">
-          <span>Vang</span>
-          <span>elke</span>
-          <span className="vaag">vonk</span>
-        </h1>
-        <p className="hero-zin">Vangen kan altijd. Ordenen komt later.</p>
-      </header>
+      <h1 className="hero-titel">
+        <span>{t('vangen.kop1')}</span>
+        <span>{t('vangen.kop2')}</span>
+        <span className="vaag">{t('vangen.kop3')}</span>
+      </h1>
 
       <VangenKaart onOpgeslagen={laden} />
 
       <section className="sectie">
         <div className="sectie-kop">
-          <h2>Inbox</h2>
+          <h2>{t('vangen.inbox')}</h2>
           <Link className="knop-kaal" to="/ideeen">
-            Alles bekijken
+            {t('vangen.alles')}
           </Link>
         </div>
         {fout && <p className="fout">{fout}</p>}
-        {!bezig && inbox.length === 0 && !fout && (
-          <p className="leeg">Nog geen vonken — typ hierboven je eerste idee</p>
-        )}
+        {!bezig && inbox.length === 0 && !fout && <p className="leeg">{t('vangen.leeg')}</p>}
         <ul className="lijst">
           {inbox.map((idee, i) => (
             <IdeeKaart key={idee.id} idee={idee} index={i + 1} />

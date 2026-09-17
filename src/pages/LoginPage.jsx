@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import TaalKnop from '../components/TaalKnop'
 import { useAuth } from '../context/AuthContext'
+import { useTaal } from '../context/TaalContext'
 
 export default function LoginPage() {
   const { logInMetWachtwoord, stuurMagicLink, stuurHerstelmail } = useAuth()
+  const { t } = useTaal()
   const [email, setEmail] = useState('')
   const [wachtwoord, setWachtwoord] = useState('')
   const [bezig, setBezig] = useState(null)
@@ -32,7 +35,7 @@ export default function LoginPage() {
     const adres = email.trim()
     if (!adres) {
       setMelding(null)
-      setFout('Vul eerst je e-mailadres in.')
+      setFout(t('login.vulEmail'))
       return
     }
     probeer(soort, async () => {
@@ -44,19 +47,18 @@ export default function LoginPage() {
   return (
     <div className="midden">
       <div className="paneel">
-        <span className="stempel">Toegang / 000</span>
         <h1 className="hero-titel">
           <span>Spark</span>
           <span className="vaag">Book</span>
         </h1>
-        <p className="uitleg" style={{ marginTop: '1rem' }}>
-          Vang je ideeën binnen vijf seconden. Ordenen komt later.
+        <p className="uitleg" style={{ marginTop: '0.75rem' }}>
+          {t('login.tagline')}
         </p>
 
         <form onSubmit={inloggen} style={{ marginTop: '1.75rem' }}>
           <div className="veldgroep">
             <label className="stempel" htmlFor="email">
-              E-mailadres
+              {t('login.email')}
             </label>
             <input
               className="veld"
@@ -65,7 +67,6 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="jij@voorbeeld.nl"
               autoComplete="email"
               required
             />
@@ -73,7 +74,7 @@ export default function LoginPage() {
 
           <div className="veldgroep">
             <label className="stempel" htmlFor="wachtwoord">
-              Wachtwoord
+              {t('login.wachtwoord')}
             </label>
             <input
               className="veld"
@@ -93,7 +94,7 @@ export default function LoginPage() {
             disabled={bezig !== null}
             style={{ marginTop: '0.9rem', width: '100%' }}
           >
-            {bezig === 'inloggen' ? 'Inloggen…' : 'Log in'}
+            {bezig === 'inloggen' ? t('login.bezig') : t('login.inloggen')}
           </button>
         </form>
 
@@ -102,30 +103,26 @@ export default function LoginPage() {
             className="knop-kaal"
             type="button"
             disabled={bezig !== null}
-            onClick={() =>
-              metEmail(
-                'herstel',
-                stuurHerstelmail,
-                'Check je mail: daarmee stel je een (nieuw) wachtwoord in.',
-              )
-            }
+            onClick={() => metEmail('herstel', stuurHerstelmail, t('login.herstelVerstuurd'))}
           >
-            Wachtwoord instellen of vergeten
+            {t('login.vergeten')}
           </button>
           <button
             className="knop-kaal"
             type="button"
             disabled={bezig !== null}
-            onClick={() =>
-              metEmail('link', stuurMagicLink, 'Check je mail: je hebt een inloglink gekregen.')
-            }
+            onClick={() => metEmail('link', stuurMagicLink, t('login.linkVerstuurd'))}
           >
-            Liever een inloglink
+            {t('login.link')}
           </button>
         </div>
 
         {melding && <p className="melding">{melding}</p>}
         {fout && <p className="fout">{fout}</p>}
+
+        <div className="paneel-voet">
+          <TaalKnop />
+        </div>
       </div>
     </div>
   )
