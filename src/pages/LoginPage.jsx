@@ -2,24 +2,43 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 export default function LoginPage() {
-  const { stuurMagicLink } = useAuth()
+  const { logInMetWachtwoord, stuurMagicLink, stuurHerstelmail } = useAuth()
   const [email, setEmail] = useState('')
-  const [bezig, setBezig] = useState(false)
-  const [verstuurd, setVerstuurd] = useState(false)
+  const [wachtwoord, setWachtwoord] = useState('')
+  const [bezig, setBezig] = useState(null)
+  const [melding, setMelding] = useState(null)
   const [fout, setFout] = useState(null)
 
-  async function versturen(event) {
-    event.preventDefault()
-    setBezig(true)
+  async function probeer(soort, actie) {
+    setBezig(soort)
     setFout(null)
+    setMelding(null)
     try {
-      await stuurMagicLink(email.trim())
-      setVerstuurd(true)
+      await actie()
     } catch (error) {
       setFout(error.message)
     } finally {
-      setBezig(false)
+      setBezig(null)
     }
+  }
+
+  function inloggen(event) {
+    event.preventDefault()
+    probeer('inloggen', () => logInMetWachtwoord(email.trim(), wachtwoord))
+  }
+
+  // Beide mails hebben een adres nodig; vragen is duidelijker dan een lege mail.
+  function metEmail(soort, actie, bevestiging) {
+    const adres = email.trim()
+    if (!adres) {
+      setMelding(null)
+      setFout('Vul eerst je e-mailadres in.')
+      return
+    }
+    probeer(soort, async () => {
+      await actie(adres)
+      setMelding(bevestiging)
+    })
   }
 
   return (
@@ -34,30 +53,78 @@ export default function LoginPage() {
           Vang je ideeën binnen vijf seconden. Ordenen komt later.
         </p>
 
-        {verstuurd ? (
-          <p className="melding">
-            Check je mail: je hebt een inloglink gekregen op <strong>{email}</strong>.
-          </p>
-        ) : (
-          <form onSubmit={versturen} style={{ marginTop: '1.75rem' }}>
-            <span className="stempel" style={{ marginBottom: '0.4rem' }}>
+        <form onSubmit={inloggen} style={{ marginTop: '1.75rem' }}>
+          <div className="veldgroep">
+            <label className="stempel" htmlFor="email">
               E-mailadres
-            </span>
+            </label>
             <input
               className="veld"
+              id="email"
+              name="email"
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="jij@voorbeeld.nl"
-              aria-label="E-mailadres"
               autoComplete="email"
               required
             />
-            <button className="knop" type="submit" disabled={bezig} style={{ marginTop: '0.6rem', width: '100%' }}>
-              {bezig ? 'Versturen…' : 'Stuur me een inloglink'}
-            </button>
-          </form>
-        )}
+          </div>
+
+          <div className="veldgroep">
+            <label className="stempel" htmlFor="wachtwoord">
+              Wachtwoord
+            </label>
+            <input
+              className="veld"
+              id="wachtwoord"
+              name="password"
+              type="password"
+              value={wachtwoord}
+              onChange={(event) => setWachtwoord(event.target.value)}
+              autoComplete="current-password"
+              required
+            />
+          </div>
+
+          <button
+            className="knop"
+            type="submit"
+            disabled={bezig !== null}
+            style={{ marginTop: '0.9rem', width: '100%' }}
+          >
+            {bezig === 'inloggen' ? 'Inloggen…' : 'Log in'}
+          </button>
+        </form>
+
+        <div className="knoprij">
+          <button
+            className="knop-kaal"
+            type="button"
+            disabled={bezig !== null}
+            onClick={() =>
+              metEmail(
+                'herstel',
+                stuurHerstelmail,
+                'Check je mail: daarmee stel je een (nieuw) wachtwoord in.',
+              )
+            }
+          >
+            Wachtwoord instellen of vergeten
+          </button>
+          <button
+            className="knop-kaal"
+            type="button"
+            disabled={bezig !== null}
+            onClick={() =>
+              metEmail('link', stuurMagicLink, 'Check je mail: je hebt een inloglink gekregen.')
+            }
+          >
+            Liever een inloglink
+          </button>
+        </div>
+
+        {melding && <p className="melding">{melding}</p>}
         {fout && <p className="fout">{fout}</p>}
       </div>
     </div>

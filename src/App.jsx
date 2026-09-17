@@ -1,14 +1,16 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Balk from './components/Balk'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import AccountPage from './pages/AccountPage'
 import DetailPage from './pages/DetailPage'
 import InstellenPage from './pages/InstellenPage'
+import HerstelPage from './pages/HerstelPage'
 import LijstPage from './pages/LijstPage'
 import LoginPage from './pages/LoginPage'
 import VangenPage from './pages/VangenPage'
 
 function Binnenkant() {
-  const { isGeconfigureerd, bezig, sessie, logUit, gebruiker } = useAuth()
+  const { isGeconfigureerd, bezig, sessie, herstelModus, gebruiker } = useAuth()
 
   if (!isGeconfigureerd) return <InstellenPage />
   if (bezig)
@@ -17,6 +19,8 @@ function Binnenkant() {
         <p className="hint">Even geduld…</p>
       </div>
     )
+  // Via een herstelmail binnengekomen: eerst een wachtwoord, dan pas de app.
+  if (herstelModus) return <HerstelPage />
   if (!sessie) return <LoginPage />
 
   return (
@@ -34,14 +38,15 @@ function Binnenkant() {
             <Route path="/" element={<VangenPage />} />
             <Route path="/ideeen" element={<LijstPage />} />
             <Route path="/idee/:id" element={<DetailPage />} />
+            <Route path="/account" element={<AccountPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
 
           <div className="voetregel">
             <span className="stempel">{gebruiker.email}</span>
-            <button className="knop-kaal" type="button" onClick={logUit}>
-              Uitloggen
-            </button>
+            <Link className="knop-kaal" to="/account">
+              Account
+            </Link>
           </div>
         </main>
 
