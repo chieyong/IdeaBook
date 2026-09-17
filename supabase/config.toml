@@ -1,4 +1,4 @@
-# Supabase CLI-configuratie voor Vonkenboek.
+# Supabase CLI-configuratie voor SparkBook.
 #
 # `supabase config push` overschrijft op het project precies die instellingen
 # die hier staan, en laat de rest met rust. Daarom staat hier bewust alleen wat
@@ -9,7 +9,7 @@
 # Heet je Netlify-site anders? Pas het domein hieronder aan (of geef de naam als
 # tweede argument aan scripts/infra-opzetten.sh, dan doet die het voor je).
 
-project_id = "vonkenboek"
+project_id = "sparkbook"
 
 [auth]
 # Waar de magic link je naartoe stuurt als er geen ander adres is meegegeven.

@@ -1,5 +1,6 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
 import Balk from './components/Balk'
+import Leader from './components/Leader'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import AccountPage from './pages/AccountPage'
 import DetailPage from './pages/DetailPage'
@@ -28,7 +29,7 @@ function Binnenkant() {
       <div className="app">
         <header className="merkbalk">
           <span className="merk">
-            Vonkenboek<span className="merk-punt">.</span>
+            SparkBook<span className="merk-punt">.</span>
           </span>
           <span className="stempel">Est. 1 idee / 5 sec</span>
         </header>
@@ -59,6 +60,7 @@ function Binnenkant() {
 export default function App() {
   return (
     <AuthProvider>
+      <Leader />
       <Binnenkant />
     </AuthProvider>
   )

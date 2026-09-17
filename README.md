@@ -1,4 +1,4 @@
-# Vonkenboek
+# SparkBook
 
 Een persoonlijke app om ideeën vast te leggen: app-ideeën, korte films, projectjes.
 Het uitgangspunt: **vangen moet binnen vijf seconden kunnen, ordenen komt later.**
@@ -16,6 +16,7 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
 - **Inloggen met wachtwoord** — je logt in de app zelf in. Een inloglink per mail
   blijft bestaan als terugval; zie *Waarom een wachtwoord* hieronder.
+- **Aanloop** — een korte filmleader bij het openen: dradenkruis, veeg en aftelling.
 - **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
 - Licht en donker thema via `prefers-color-scheme`, mobile-first.
 - **Retro-vormgeving** — brede mono-displayletters, papier-en-inkt palet, omgekeerde panelen.
@@ -146,7 +147,7 @@ lokaal testen doe je met `npm run build && npm run preview`.
 
 ```
 src/
-  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld, WachtwoordFormulier
+  components/   VangenKaart, IdeeKaart, TypeChips, Balk, GroeiVeld, WachtwoordFormulier, Leader
   context/      AuthContext (sessie + magic link)
   lib/          supabase-client, datatoegang (ideeen.js), constanten, datumopmaak, authfouten
   pages/        Vangen, Lijst, Detail, Login, Herstel, Account, Instellen
@@ -158,7 +159,7 @@ public/
   fonts/        Martian Mono + Space Grotesk (OFL), meegeleverd voor offline gebruik
   icons/        PWA-iconen
 scripts/
-  genereer-iconen.mjs   maakt de PWA-iconen opnieuw (geen dependencies nodig)
+  genereer-iconen.mjs   tekent het leadermerk als PWA-iconen (geen dependencies nodig)
   infra-opzetten.sh     zet Supabase en Netlify op via de CLI's, stap voor stap
 ```
 
@@ -203,6 +204,14 @@ draait. Alles zit in `src/styles.css`, er is geen CSS-framework.
   volgnummers op kaarten (`01`, `02`), het typeplaatje op de detailpagina
   (`.specs`), de ronde actieknop (`.knop-rond`) en de kop die naar onderen
   uitdooft (`.hero-titel .vaag` / `.vager`).
+- **Aanloop en icoon** — beide gebruiken hetzelfde leadermerk: een ring met een
+  dradenkruis dat tot de rand doorloopt en een rondgaande veeg in `--vonk`. De
+  aanloop (`Leader.jsx`) telt af van 3 en duurt ongeveer 1,3 seconde. Hij speelt
+  één keer per keer dat de app geladen wordt, is met één tik over te slaan, en
+  wordt bij `prefers-reduced-motion` helemaal niet getoond. De app rendert er
+  ondertussen al achter, dus hij vertraagt het laden niet — alleen het zicht
+  erop. Korter of weg? Pas `TIK`, `MERK` en `UITDOVEN` boven in `Leader.jsx` aan,
+  of haal `<Leader />` uit `App.jsx`.
 - **Toegankelijkheid** — de uitdovende kop blijft leesbaar (52% en 32% dekking),
   animaties respecteren `prefers-reduced-motion` en focus blijft zichtbaar.
 
