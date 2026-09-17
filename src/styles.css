@@ -276,7 +276,9 @@ h2 {
   background: transparent;
   border: 0;
   border-radius: var(--radius-rond);
-  color: var(--inkt-flauw);
+  /* Een schakelaar moet je kunnen lezen: --inkt-flauw haalt op deze maat de
+     contrastdrempel niet. */
+  color: var(--inkt-zacht);
   cursor: pointer;
   font-family: var(--mono);
   font-size: 0.6rem;
