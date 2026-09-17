@@ -54,7 +54,7 @@
   --kaart-hoog: #fffefa;
   --inkt: #15150f;
   --inkt-zacht: #5c584c;
-  --inkt-flauw: #918b7b;
+  --inkt-flauw: #666152;
   --rand: #c6bfab;
   --rand-zacht: #d7d0bd;
 
@@ -90,7 +90,7 @@
     --kaart-hoog: #232320;
     --inkt: #efece0;
     --inkt-zacht: #9d978a;
-    --inkt-flauw: #6f6a5e;
+    --inkt-flauw: #8d8877;
     --rand: #33322b;
     --rand-zacht: #262521;
 
@@ -1126,6 +1126,16 @@ h2 {
 
 .paneel .uitleg {
   color: var(--diep-zacht);
+}
+
+/* Tekstknoppen op het paneel moeten de paneelkleuren volgen, niet die van de
+   pagina eromheen: anders vallen ze weg tegen het omgekeerde vlak. */
+.paneel .knop-kaal {
+  color: var(--diep-zacht);
+}
+
+.paneel .knop-kaal:hover {
+  color: var(--diep-inkt);
 }
 
 .paneel .veld {
