@@ -1,0 +1,12 @@
+De lettertypen in deze map worden meegeleverd zodat de app ook offline (PWA)
+en zonder verzoek aan derden de juiste letters toont.
+
+Martian Mono — Copyright (c) Evil Martians
+  https://github.com/evilmartians/mono
+Space Grotesk — Copyright (c) Florian Karsten
+  https://github.com/floriankarsten/space-grotesk
+
+Beide zijn uitgegeven onder de SIL Open Font License 1.1:
+  https://openfontlicense.org/open-font-license-official-text/
+
+Bestanden: de latin- en latin-ext-subsets zoals gepubliceerd via Google Fonts.

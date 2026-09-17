@@ -26,12 +26,15 @@ export default function VangenPage() {
 
   return (
     <>
-      <div className="kop">
-        <div>
-          <h1>Vonkenboek</h1>
-          <p>Vangen kan altijd. Ordenen komt later.</p>
-        </div>
-      </div>
+      <header className="hero">
+        <span className="stempel">Vangen / 001</span>
+        <h1 className="hero-titel">
+          <span>Vang</span>
+          <span>elke</span>
+          <span className="vaag">vonk</span>
+        </h1>
+        <p className="hero-zin">Vangen kan altijd. Ordenen komt later.</p>
+      </header>
 
       <VangenKaart onOpgeslagen={laden} />
 
@@ -44,11 +47,11 @@ export default function VangenPage() {
         </div>
         {fout && <p className="fout">{fout}</p>}
         {!bezig && inbox.length === 0 && !fout && (
-          <p className="leeg">Nog geen vonken. Typ hierboven je eerste idee.</p>
+          <p className="leeg">Nog geen vonken — typ hierboven je eerste idee</p>
         )}
         <ul className="lijst">
-          {inbox.map((idee) => (
-            <IdeeKaart key={idee.id} idee={idee} />
+          {inbox.map((idee, i) => (
+            <IdeeKaart key={idee.id} idee={idee} index={i + 1} />
           ))}
         </ul>
       </section>
