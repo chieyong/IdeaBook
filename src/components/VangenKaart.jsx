@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import GroeiVeld from './GroeiVeld'
 import TypeChips from './TypeChips'
 import { useAuth } from '../context/AuthContext'
-import { typeEmoji, typeLabel } from '../lib/constanten'
+import { typeCode, typeLabel } from '../lib/constanten'
 import { vangIdee, voegFragmentToe, zoekIdeeen } from '../lib/ideeen'
 
 /**
@@ -108,6 +108,11 @@ export default function VangenKaart({ onOpgeslagen }) {
 
   return (
     <div className="vangen">
+      <div className="vangen-kop">
+        <span className="stempel">{isNieuw ? 'Nieuw idee' : 'Bestaand idee'}</span>
+        <span className="stempel vangen-rec">Rec</span>
+      </div>
+
       <GroeiVeld
         veldRef={tekstRef}
         className="vangen-titel"
@@ -139,17 +144,24 @@ export default function VangenKaart({ onOpgeslagen }) {
             aria-label="Eén zin erbij, optioneel"
           />
           <div className="vangen-voet">
+            <span className="stempel vangen-veldnaam">Type</span>
             <TypeChips waarde={type} onKies={setType} />
           </div>
           <div className="vangen-actie">
-            <span className="hint">Enter bewaart meteen.</span>
-            <button className="knop" type="button" onClick={bewaarNieuw} disabled={!tekst.trim() || bezig}>
-              {bezig ? '…' : 'Vang'}
+            <span className="hint">Enter bewaart meteen</span>
+            <button
+              className="knop knop-rond"
+              type="button"
+              onClick={bewaarNieuw}
+              disabled={!tekst.trim() || bezig}
+            >
+              {bezig ? '…' : '— Vang'}
             </button>
           </div>
         </>
       ) : (
         <div className="vangen-voet">
+          <span className="stempel vangen-veldnaam">Zoeken</span>
           <input
             className="veld"
             value={zoekterm}
@@ -163,7 +175,9 @@ export default function VangenKaart({ onOpgeslagen }) {
               {resultaten.map((idee) => (
                 <li key={idee.id}>
                   <button className="zoekresultaat" type="button" onClick={() => bewaarBijBestaand(idee)}>
-                    <span aria-hidden="true">{typeEmoji(idee.type)}</span>
+                    <span className="idee-index" aria-hidden="true">
+                      {typeCode(idee.type)}
+                    </span>
                     <span>
                       {idee.titel}
                       <br />
@@ -172,7 +186,7 @@ export default function VangenKaart({ onOpgeslagen }) {
                   </button>
                 </li>
               ))}
-              {!zoekt && resultaten.length === 0 && <li className="hint">Niets gevonden.</li>}
+              {!zoekt && resultaten.length === 0 && <li className="hint">Niets gevonden</li>}
             </ul>
           )}
         </div>

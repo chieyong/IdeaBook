@@ -24,9 +24,13 @@ export default function LoginPage() {
 
   return (
     <div className="midden">
-      <div>
-        <h1>Vonkenboek</h1>
-        <p className="uitleg" style={{ marginTop: '0.35rem' }}>
+      <div className="paneel">
+        <span className="stempel">Toegang / 000</span>
+        <h1 className="hero-titel">
+          <span>Vonken</span>
+          <span className="vaag">boek</span>
+        </h1>
+        <p className="uitleg" style={{ marginTop: '1rem' }}>
           Vang je ideeën binnen vijf seconden. Ordenen komt later.
         </p>
 
@@ -35,7 +39,10 @@ export default function LoginPage() {
             Check je mail: je hebt een inloglink gekregen op <strong>{email}</strong>.
           </p>
         ) : (
-          <form onSubmit={versturen} style={{ marginTop: '1.5rem' }}>
+          <form onSubmit={versturen} style={{ marginTop: '1.75rem' }}>
+            <span className="stempel" style={{ marginBottom: '0.4rem' }}>
+              E-mailadres
+            </span>
             <input
               className="veld"
               type="email"

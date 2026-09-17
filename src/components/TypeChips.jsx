@@ -12,7 +12,7 @@ export default function TypeChips({ waarde, onKies }) {
           aria-pressed={waarde === type.waarde}
           onClick={() => onKies(type.waarde)}
         >
-          {type.emoji} {type.label}
+          {type.label}
         </button>
       ))}
     </div>

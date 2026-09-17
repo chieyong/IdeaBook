@@ -16,6 +16,7 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
 - **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
 - Licht en donker thema via `prefers-color-scheme`, mobile-first.
+- **Retro-vormgeving** — brede mono-displayletters, papier-en-inkt palet, omgekeerde panelen.
 
 Fase 2 (sjablonen, status, tags, scores, matrix) en fase 3 (review, herontdek,
 kerkhof, koppelen) zitten er nog niet in; het datamodel houdt er wel al rekening mee.
@@ -149,10 +150,34 @@ supabase/
   migrations/   SQL-schema met RLS
 supabase/
   config.toml   auth-instellingen (site-URL en redirect-URL's) voor `supabase config push`
+public/
+  fonts/        Martian Mono + Space Grotesk (OFL), meegeleverd voor offline gebruik
+  icons/        PWA-iconen
 scripts/
   genereer-iconen.mjs   maakt de PWA-iconen opnieuw (geen dependencies nodig)
   infra-opzetten.sh     zet Supabase en Netlify op via de CLI's, stap voor stap
 ```
+
+## Vormgeving
+
+De look is retro-technisch: alsof de app op een apparaat uit de jaren tachtig
+draait. Alles zit in `src/styles.css`, er is geen CSS-framework.
+
+- **Letters** — `Martian Mono` (breed, blokkerig, variabel in gewicht én breedte)
+  voor koppen, knoppen en labels; `Space Grotesk` voor lopende tekst. Beide staan
+  als woff2 in `public/fonts/` met een `@font-face` bovenaan de stylesheet, zodat
+  de app offline werkt en er geen verzoek naar een derde partij gaat. Ze vallen
+  onder de SIL Open Font License 1.1 (zie `public/fonts/LICENSE.txt`).
+- **Palet** — papier (warm beige) en inkt (bijna zwart), met `--diep` als het
+  omgekeerde vlak: donker op licht, licht op donker. In donkere modus draaien
+  beide om, zodat het contrastpaneel altijd blijft werken. `--vonk` is het enige
+  accent en wordt spaarzaam gebruikt.
+- **Terugkerende elementen** — de `.stempel` (klein, gesperd, in hoofdletters),
+  volgnummers op kaarten (`01`, `02`), het typeplaatje op de detailpagina
+  (`.specs`), de ronde actieknop (`.knop-rond`) en de kop die naar onderen
+  uitdooft (`.hero-titel .vaag` / `.vager`).
+- **Toegankelijkheid** — de uitdovende kop blijft leesbaar (52% en 32% dekking),
+  animaties respecteren `prefers-reduced-motion` en focus blijft zichtbaar.
 
 ## Afwijkingen van het oorspronkelijke datamodel
 

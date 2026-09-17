@@ -1,8 +1,8 @@
 export const TYPES = [
-  { waarde: 'app', label: 'App', emoji: '📱' },
-  { waarde: 'film', label: 'Film', emoji: '🎬' },
-  { waarde: 'project', label: 'Project', emoji: '🔧' },
-  { waarde: 'overig', label: 'Overig', emoji: '✳️' },
+  { waarde: 'app', label: 'App', code: 'APP', emoji: '📱' },
+  { waarde: 'film', label: 'Film', code: 'FLM', emoji: '🎬' },
+  { waarde: 'project', label: 'Project', code: 'PRJ', emoji: '🔧' },
+  { waarde: 'overig', label: 'Overig', code: 'OVR', emoji: '✳️' },
 ]
 
 export const STATUSSEN = [
@@ -16,4 +16,6 @@ export const STATUSSEN = [
 
 export const typeLabel = (waarde) => TYPES.find((t) => t.waarde === waarde)?.label ?? waarde
 export const typeEmoji = (waarde) => TYPES.find((t) => t.waarde === waarde)?.emoji ?? '✳️'
+/** Korte modelcode, zoals op een typeplaatje. */
+export const typeCode = (waarde) => TYPES.find((t) => t.waarde === waarde)?.code ?? 'OVR'
 export const statusLabel = (waarde) => STATUSSEN.find((s) => s.waarde === waarde)?.label ?? waarde

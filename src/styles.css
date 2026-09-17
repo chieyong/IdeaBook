@@ -1,36 +1,107 @@
-/* Vonkenboek — rustig, veel witruimte, mobile-first. */
+/* Vonkenboek — retro-tech look: brede mono-letters, papier & inkt, harde vlakken. */
+
+/* Zelf meegeleverd, zodat de letters ook offline en zonder derden laden.
+   Beide zijn variabel: Martian Mono ook in breedte (font-stretch). */
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 300 800;
+  font-stretch: 75% 112.5%;
+  font-display: swap;
+  src: url('/fonts/martian-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-weight: 300 800;
+  font-stretch: 75% 112.5%;
+  font-display: swap;
+  src: url('/fonts/martian-mono-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 :root {
-  --papier: #faf9f7;
-  --kaart: #ffffff;
-  --rand: #e7e3dc;
-  --rand-zacht: #f0ece5;
-  --inkt: #1c1a16;
-  --inkt-zacht: #6b6558;
-  --inkt-flauw: #9a9386;
-  --vonk: #d98324;
-  --vonk-zacht: #fdf1e0;
-  --gevaar: #b3261e;
+  color-scheme: light;
+
+  /* Papier & inkt */
+  --papier: #e7e2d5;
+  --papier-diep: #dcd6c6;
+  --kaart: #f5f2ea;
+  --kaart-hoog: #fffefa;
+  --inkt: #15150f;
+  --inkt-zacht: #5c584c;
+  --inkt-flauw: #918b7b;
+  --rand: #c6bfab;
+  --rand-zacht: #d7d0bd;
+
+  /* Omgekeerd vlak: het donkere paneel tegenover het papier. */
+  --diep: #1a1a16;
+  --diep-inkt: #f2efe4;
+  --diep-zacht: #9d978a;
+  --diep-rand: #33322a;
+
+  --vonk: #c4521c;
+  --vonk-zacht: #f4e3d3;
+  --gevaar: #96271f;
+
+  /* Typografie */
+  --mono: 'Martian Mono', ui-monospace, 'SF Mono', 'Menlo', monospace;
+  --grotesk: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
   --ruimte: 1rem;
-  --radius: 14px;
-  --radius-groot: 20px;
-  --schaduw: 0 1px 2px rgb(28 26 22 / 6%), 0 8px 24px rgb(28 26 22 / 4%);
+  --radius: 6px;
+  --radius-groot: 28px;
+  --radius-rond: 999px;
+  --schaduw: none;
   --max-breedte: 640px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --papier: #14130f;
-    --kaart: #1d1b16;
-    --rand: #322e26;
-    --rand-zacht: #26231d;
-    --inkt: #f2efe8;
-    --inkt-zacht: #a9a294;
-    --inkt-flauw: #777164;
-    --vonk: #f2a33c;
-    --vonk-zacht: #2a2114;
-    --gevaar: #f2b8b5;
-    --schaduw: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 20%);
+    color-scheme: dark;
+
+    --papier: #131312;
+    --papier-diep: #0d0d0c;
+    --kaart: #1c1c19;
+    --kaart-hoog: #232320;
+    --inkt: #efece0;
+    --inkt-zacht: #9d978a;
+    --inkt-flauw: #6f6a5e;
+    --rand: #33322b;
+    --rand-zacht: #262521;
+
+    --diep: #f2efe4;
+    --diep-inkt: #15150f;
+    --diep-zacht: #63604f;
+    --diep-rand: #d3ccb8;
+
+    --vonk: #ef7c3c;
+    --vonk-zacht: #2c1d12;
+    --gevaar: #f0a59c;
   }
 }
 
@@ -47,9 +118,9 @@ body {
 body {
   background: var(--papier);
   color: var(--inkt);
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  font-size: 17px;
-  line-height: 1.55;
+  font-family: var(--grotesk);
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -57,18 +128,7 @@ body {
 h1,
 h2,
 h3 {
-  line-height: 1.25;
-  letter-spacing: -0.015em;
   margin: 0;
-}
-
-h1 {
-  font-size: 1.5rem;
-}
-
-h2 {
-  font-size: 1.05rem;
-  font-weight: 600;
 }
 
 a {
@@ -81,6 +141,54 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+}
+
+/* ---------------------------------------------------------- typografie --- */
+
+/* Alle grote koppen: breed, blokkerig, in hoofdletters. */
+.display {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  font-size: clamp(1.45rem, 7.4vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Kleine technische labels: mono, gesperd, in hoofdletters. */
+.stempel,
+.sectie-kop h2,
+.balk a,
+.knop,
+.chip,
+.label {
+  font-family: var(--mono);
+  font-stretch: 87.5%;
+  text-transform: uppercase;
+}
+
+.stempel {
+  color: var(--inkt-flauw);
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
 }
 
 /* ------------------------------------------------------------- layout --- */
@@ -97,41 +205,182 @@ select {
   max-width: var(--max-breedte);
   margin: 0 auto;
   padding: calc(var(--ruimte) * 1.25) var(--ruimte);
-  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+}
+
+/* Vaste kop met het woordmerk, zoals het kader van een apparaat. */
+.merkbalk {
+  align-items: center;
+  border-bottom: 1px solid var(--rand);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin: 0 auto 1.5rem;
+  max-width: var(--max-breedte);
+  padding: calc(0.6rem + env(safe-area-inset-top)) var(--ruimte) 0.6rem;
+  width: 100%;
+}
+
+.merk {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-stretch: 87.5%;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.merk-punt {
+  color: var(--vonk);
 }
 
 .kop {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--ruimte);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .kop p {
-  margin: 0.25rem 0 0;
   color: var(--inkt-zacht);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  margin: 0.55rem 0 0;
+  max-width: 34ch;
 }
 
 .sectie {
-  margin-top: 2.25rem;
+  margin-top: 2.5rem;
 }
 
 .sectie-kop {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
+  border-top: 1px solid var(--rand);
+  display: flex;
   gap: var(--ruimte);
-  margin-bottom: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+  padding-top: 0.55rem;
 }
 
 .sectie-kop h2 {
   color: var(--inkt-zacht);
-  font-size: 0.8rem;
+  font-size: 0.64rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
+}
+
+/* --------------------------------------------------------------- hero --- */
+
+/* Grote kop die naar onderen wegvaagt — het "scherm dat uitdooft". */
+.hero {
+  margin-bottom: 1.75rem;
+}
+
+.hero-titel {
+  font-family: var(--mono);
+  font-size: clamp(2rem, 13.5vw, 3.6rem);
+  font-stretch: 82%;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+  margin: 0.7rem 0 0;
   text-transform: uppercase;
+}
+
+.hero-titel span {
+  display: block;
+}
+
+/* De kop dooft naar onderen uit, maar blijft leesbaar. */
+.hero-titel span + span {
+  padding-left: 0.4em;
+}
+
+.hero-titel span + span + span {
+  padding-left: 0.8em;
+}
+
+.hero-titel span + span + span + span {
+  padding-left: 1.2em;
+}
+
+.hero-titel .vaag {
+  color: color-mix(in srgb, var(--inkt) 52%, transparent);
+}
+
+.hero-titel .vager {
+  color: color-mix(in srgb, var(--inkt) 32%, transparent);
+}
+
+/* Op het omgekeerde paneel dooft hij uit naar de andere kant. */
+.paneel .hero-titel .vaag {
+  color: color-mix(in srgb, var(--diep-inkt) 52%, transparent);
+}
+
+.paneel .hero-titel .vager {
+  color: color-mix(in srgb, var(--diep-inkt) 32%, transparent);
+}
+
+.hero-titel-klein {
+  font-size: clamp(1.5rem, 8.5vw, 2.3rem);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  overflow-wrap: anywhere;
+}
+
+/* Grote teller, zoals het bouwjaar op het ontwerp. */
+.teller {
+  align-items: baseline;
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.teller-getal {
+  font-family: var(--mono);
+  font-size: 2.6rem;
+  font-stretch: 82%;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+/* Typeplaatje op de detailpagina: labels boven waarden, in twee kolommen. */
+.specs {
+  border-top: 1px solid var(--rand);
+  display: grid;
+  gap: 1.1rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.5rem 0 0;
+  padding-top: 1.1rem;
+}
+
+.spec {
+  min-width: 0;
+}
+
+.spec-waarde {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-stretch: 85%;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  margin: 0.35rem 0 0;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.filterrij {
+  border-top: 1px solid var(--rand-zacht);
+  padding-top: 0.6rem;
+}
+
+.filterrij .stempel {
+  margin-bottom: 0.45rem;
+}
+
+.hero-zin {
+  color: var(--inkt-zacht);
+  font-size: 0.92rem;
+  margin: 1rem 0 0;
+  max-width: 32ch;
 }
 
 /* -------------------------------------------------------------- vangen --- */
@@ -140,37 +389,79 @@ select {
   background: var(--kaart);
   border: 1px solid var(--rand);
   border-radius: var(--radius-groot);
-  box-shadow: var(--schaduw);
-  padding: 1.1rem;
+  padding: 1.35rem 1.2rem 1.2rem;
+  position: relative;
+}
+
+.vangen-kop {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+/* Knipperend opnamelampje: het vangen loopt. */
+.vangen-rec {
+  align-items: center;
+  color: var(--vonk);
+  display: flex;
+  gap: 0.35rem;
+}
+
+.vangen-rec::before {
+  animation: pols 2s ease-in-out infinite;
+  background: var(--vonk);
+  border-radius: 50%;
+  content: '';
+  height: 6px;
+  width: 6px;
+}
+
+@keyframes pols {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.vangen-veldnaam {
+  margin-bottom: 0.5rem;
 }
 
 .vangen-titel {
-  width: 100%;
-  border: 0;
-  line-height: 1.3;
   background: transparent;
-  font-size: 1.35rem;
+  border: 0;
+  font-family: var(--mono);
+  font-size: 1.28rem;
+  font-stretch: 85%;
   font-weight: 600;
-  letter-spacing: -0.02em;
-  padding: 0;
+  letter-spacing: -0.045em;
+  line-height: 1.16;
   outline: none;
+  padding: 0;
+  width: 100%;
 }
 
 .vangen-titel::placeholder {
   color: var(--inkt-flauw);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .vangen-zin {
-  width: 100%;
-  border: 0;
   background: transparent;
-  resize: none;
+  border: 0;
+  color: var(--inkt-zacht);
+  font-family: var(--grotesk);
+  font-size: 0.95rem;
+  margin-top: 0.7rem;
   outline: none;
   padding: 0;
-  margin-top: 0.6rem;
-  color: var(--inkt-zacht);
-  font-size: 1rem;
+  resize: none;
+  width: 100%;
 }
 
 .vangen-zin::placeholder {
@@ -179,15 +470,19 @@ select {
 
 .vangen-titel,
 .vangen-zin {
-  font-family: inherit;
   overflow: hidden;
   resize: none;
 }
 
+/* Variant zonder meegroeien: hier mag het veld zelf scrollen. */
+.vangen-zin-vrij {
+  overflow: auto;
+}
+
 .vangen-voet {
   border-top: 1px solid var(--rand-zacht);
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
+  margin-top: 1.1rem;
+  padding-top: 1rem;
 }
 
 .vangen-actie {
@@ -195,16 +490,20 @@ select {
   display: flex;
   gap: 0.75rem;
   justify-content: space-between;
-  margin-top: 0.9rem;
+  margin-top: 1.1rem;
 }
 
 .vangen-wissel {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
 }
 
 .hint {
   color: var(--inkt-flauw);
-  font-size: 0.78rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-stretch: 87.5%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 /* --------------------------------------------------------------- chips --- */
@@ -212,49 +511,47 @@ select {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .chip {
   background: transparent;
   border: 1px solid var(--rand);
-  border-radius: 999px;
+  border-radius: var(--radius-rond);
   color: var(--inkt-zacht);
   cursor: pointer;
-  font-size: 0.85rem;
-  padding: 0.3rem 0.7rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 0.42rem 0.75rem;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
 .chip:hover {
   border-color: var(--inkt-flauw);
+  color: var(--inkt);
 }
 
 .chip[aria-pressed='true'] {
-  background: var(--vonk-zacht);
-  border-color: var(--vonk);
-  color: var(--vonk);
-  font-weight: 600;
+  background: var(--diep);
+  border-color: var(--diep);
+  color: var(--diep-inkt);
+  font-weight: 700;
 }
 
 /* ------------------------------------------------------------- knoppen --- */
 
 .knop {
-  background: var(--vonk);
-  border: 1px solid transparent;
-  border-radius: 999px;
-  color: #fff;
+  background: var(--diep);
+  border: 1px solid var(--diep);
+  border-radius: var(--radius-rond);
+  color: var(--diep-inkt);
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.66rem;
   font-weight: 600;
-  padding: 0.55rem 1.2rem;
+  letter-spacing: 0.14em;
+  padding: 0.7rem 1.25rem;
   transition: opacity 0.15s, transform 0.05s;
-}
-
-@media (prefers-color-scheme: dark) {
-  .knop {
-    color: #1a1712;
-  }
 }
 
 .knop:active {
@@ -263,14 +560,35 @@ select {
 
 .knop:disabled {
   cursor: not-allowed;
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .knop-stil {
   background: transparent;
   border: 1px solid var(--rand);
   color: var(--inkt-zacht);
-  font-weight: 500;
+}
+
+/* De ronde knop uit het ontwerp: een cirkel met een streepje ervoor. */
+.knop-rond {
+  align-items: center;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px solid var(--inkt);
+  border-radius: 50%;
+  color: var(--inkt);
+  display: inline-flex;
+  font-size: 0.62rem;
+  justify-content: center;
+  letter-spacing: 0.1em;
+  min-width: 4.9rem;
+  padding: 0;
+  text-align: center;
+}
+
+.knop-rond:not(:disabled):hover {
+  background: var(--inkt);
+  color: var(--papier);
 }
 
 .knop-kaal {
@@ -278,10 +596,14 @@ select {
   border: 0;
   color: var(--inkt-zacht);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-stretch: 87.5%;
+  letter-spacing: 0.12em;
   padding: 0.3rem 0;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-transform: uppercase;
+  text-underline-offset: 4px;
 }
 
 .knop-kaal:hover {
@@ -293,7 +615,7 @@ select {
 .lijst {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.4rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -302,15 +624,18 @@ select {
 .idee-kaart {
   background: var(--kaart);
   border: 1px solid var(--rand);
-  border-radius: var(--radius);
+  border-radius: 18px;
   color: inherit;
-  display: block;
-  padding: 0.85rem 1rem;
+  display: grid;
+  gap: 0.1rem 0.85rem;
+  grid-template-columns: 2.2rem 1fr;
+  padding: 0.95rem 1.05rem;
   text-decoration: none;
-  transition: border-color 0.15s, transform 0.08s;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
 }
 
 .idee-kaart:hover {
+  background: var(--kaart-hoog);
   border-color: var(--inkt-flauw);
 }
 
@@ -318,10 +643,28 @@ select {
   transform: scale(0.995);
 }
 
+/* Volgnummer, zoals het modelnummer op een typeplaatje. */
+.idee-index {
+  color: var(--inkt-flauw);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-stretch: 87.5%;
+  font-weight: 500;
+  grid-row: span 2;
+  letter-spacing: 0.02em;
+  padding-top: 0.12rem;
+}
+
 .idee-kaart h3 {
-  font-size: 1rem;
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  font-stretch: 85%;
   font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.24;
   margin: 0;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
 }
 
 .idee-meta {
@@ -329,34 +672,46 @@ select {
   color: var(--inkt-flauw);
   display: flex;
   flex-wrap: wrap;
-  font-size: 0.78rem;
-  gap: 0.5rem;
-  margin-top: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  font-stretch: 87.5%;
+  gap: 0.45rem;
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
 }
 
 .label {
-  background: var(--rand-zacht);
-  border-radius: 999px;
+  border: 1px solid var(--rand);
+  border-radius: var(--radius-rond);
   color: var(--inkt-zacht);
-  font-size: 0.72rem;
-  padding: 0.1rem 0.5rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.5rem;
 }
 
 .label-vonk {
-  background: var(--vonk-zacht);
-  color: var(--vonk);
+  background: var(--vonk);
+  border-color: var(--vonk);
+  color: var(--kaart-hoog);
+}
+
+@media (prefers-color-scheme: dark) {
+  .label-vonk {
+    color: #17110b;
+  }
 }
 
 /* ------------------------------------------------------------ tijdlijn --- */
 
 .tijdlijn {
-  border-left: 2px solid var(--rand);
+  border-left: 1px solid var(--rand);
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.6rem;
   list-style: none;
   margin: 0;
-  padding: 0.25rem 0 0.25rem 1.1rem;
+  padding: 0.25rem 0 0.25rem 1.2rem;
 }
 
 .fragment {
@@ -364,38 +719,42 @@ select {
 }
 
 .fragment::before {
-  background: var(--rand);
-  border-radius: 50%;
+  background: var(--papier);
+  border: 1px solid var(--rand);
   content: '';
-  height: 9px;
-  left: calc(-1.1rem - 5.5px);
+  height: 7px;
+  left: calc(-1.2rem - 4px);
   position: absolute;
-  top: 0.45rem;
-  width: 9px;
+  top: 0.4rem;
+  width: 7px;
 }
 
 .fragment:last-child::before {
   background: var(--vonk);
+  border-color: var(--vonk);
 }
 
 .fragment-tijd {
   color: var(--inkt-flauw);
   display: block;
-  font-size: 0.74rem;
-  letter-spacing: 0.03em;
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  font-stretch: 87.5%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .fragment-inhoud {
-  margin: 0.2rem 0 0;
-  white-space: pre-wrap;
+  margin: 0.35rem 0 0;
   overflow-wrap: anywhere;
+  white-space: pre-wrap;
 }
 
 .fragment-link {
   color: var(--vonk);
   display: inline-block;
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  margin-top: 0.4rem;
   overflow-wrap: anywhere;
 }
 
@@ -404,27 +763,31 @@ select {
 .veld {
   background: var(--kaart);
   border: 1px solid var(--rand);
-  border-radius: var(--radius);
-  padding: 0.6rem 0.85rem;
-  width: 100%;
+  border-radius: 14px;
   outline: none;
+  padding: 0.75rem 0.9rem;
+  width: 100%;
+}
+
+.veld::placeholder {
+  color: var(--inkt-flauw);
 }
 
 .veld:focus {
-  border-color: var(--vonk);
+  border-color: var(--inkt);
 }
 
 .filters {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 1.25rem;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .zoekresultaten {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
   list-style: none;
   margin: 0.6rem 0 0;
   padding: 0;
@@ -433,11 +796,11 @@ select {
 .zoekresultaat {
   background: transparent;
   border: 0;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem 0.6rem;
+  gap: 0.55rem;
+  padding: 0.55rem 0.6rem;
   text-align: left;
   width: 100%;
 }
@@ -449,79 +812,88 @@ select {
 
 /* --------------------------------------------------------------- balk ---- */
 
+/* Zwevende capsule onderin, als de bedieningsbalk van een apparaat. */
 .balk {
-  backdrop-filter: blur(12px);
-  background: color-mix(in srgb, var(--papier) 88%, transparent);
-  border-top: 1px solid var(--rand);
-  bottom: 0;
+  bottom: calc(0.85rem + env(safe-area-inset-bottom));
   left: 0;
-  padding: 0.5rem var(--ruimte) calc(0.5rem + env(safe-area-inset-bottom));
+  padding: 0 var(--ruimte);
   position: fixed;
   right: 0;
   z-index: 20;
 }
 
 .balk-binnen {
+  background: var(--diep);
+  border-radius: var(--radius-rond);
   display: flex;
-  gap: 0.5rem;
-  justify-content: space-around;
+  gap: 0.25rem;
   margin: 0 auto;
-  max-width: var(--max-breedte);
+  max-width: 24rem;
+  padding: 0.3rem;
 }
 
 .balk a {
   align-items: center;
-  border-radius: 12px;
-  color: var(--inkt-zacht);
+  border-radius: var(--radius-rond);
+  color: var(--diep-zacht);
   display: flex;
   flex: 1;
-  flex-direction: column;
-  font-size: 0.7rem;
-  gap: 0.1rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  gap: 0.45rem;
   justify-content: center;
-  padding: 0.35rem;
+  letter-spacing: 0.14em;
+  padding: 0.7rem 0.5rem;
   text-decoration: none;
+  transition: background 0.15s, color 0.15s;
 }
 
 .balk a.actief {
-  color: var(--vonk);
-  font-weight: 600;
+  background: var(--diep-inkt);
+  color: var(--diep);
 }
 
 .balk-icoon {
-  font-size: 1.15rem;
-  line-height: 1;
+  background: currentColor;
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
 }
 
 /* --------------------------------------------------------------- overig -- */
 
 .leeg {
   border: 1px dashed var(--rand);
-  border-radius: var(--radius);
-  color: var(--inkt-zacht);
-  font-size: 0.9rem;
-  padding: 1.5rem 1rem;
+  border-radius: 18px;
+  color: var(--inkt-flauw);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-stretch: 87.5%;
+  letter-spacing: 0.12em;
+  padding: 1.75rem 1rem;
   text-align: center;
+  text-transform: uppercase;
 }
 
 .melding {
-  background: var(--vonk-zacht);
-  border-radius: var(--radius);
+  border: 1px solid var(--vonk);
+  border-radius: 14px;
   color: var(--vonk);
-  font-size: 0.88rem;
-  margin-top: 0.75rem;
-  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.9rem;
 }
 
 .fout {
-  background: color-mix(in srgb, var(--gevaar) 12%, transparent);
-  border-radius: var(--radius);
+  border: 1px solid var(--gevaar);
+  border-radius: 14px;
   color: var(--gevaar);
-  font-size: 0.88rem;
-  margin-top: 0.75rem;
-  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.9rem;
 }
 
+/* Het donkere paneel: gebruikt voor inloggen en instellen. */
 .midden {
   align-items: center;
   display: flex;
@@ -532,16 +904,85 @@ select {
 }
 
 .midden > * {
-  max-width: 380px;
+  max-width: 400px;
   width: 100%;
 }
 
+.paneel {
+  background: var(--diep);
+  border-radius: var(--radius-groot);
+  color: var(--diep-inkt);
+  padding: 2rem 1.5rem 1.75rem;
+}
+
+.paneel .stempel,
+.paneel .hint {
+  color: var(--diep-zacht);
+}
+
+.paneel .uitleg {
+  color: var(--diep-zacht);
+}
+
+.paneel .veld {
+  background: transparent;
+  border-color: var(--diep-rand);
+  color: var(--diep-inkt);
+}
+
+.paneel .veld::placeholder {
+  color: var(--diep-zacht);
+}
+
+.paneel .veld:focus {
+  border-color: var(--diep-inkt);
+}
+
+.paneel .knop {
+  background: var(--diep-inkt);
+  border-color: var(--diep-inkt);
+  color: var(--diep);
+}
+
+.paneel .melding,
+.paneel .fout {
+  border-color: currentColor;
+}
+
+.paneel .melding {
+  color: #f0a969;
+}
+
+.paneel .fout {
+  color: #f0a59c;
+}
+
+@media (prefers-color-scheme: dark) {
+  .paneel .melding {
+    color: #a8461a;
+  }
+
+  .paneel .fout {
+    color: #8f241c;
+  }
+}
+
+.paneel code,
+.paneel .uitleg code {
+  background: color-mix(in srgb, var(--diep-inkt) 14%, transparent);
+  color: var(--diep-inkt);
+}
+
 .terug {
-  color: var(--inkt-zacht);
+  color: var(--inkt-flauw);
   display: inline-block;
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-stretch: 87.5%;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.5rem;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .terug:hover {
@@ -550,14 +991,26 @@ select {
 
 .uitleg {
   color: var(--inkt-zacht);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .uitleg code {
   background: var(--rand-zacht);
-  border-radius: 6px;
-  font-size: 0.85em;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.78em;
   padding: 0.1rem 0.35rem;
+}
+
+/* Voetregel met sessie-informatie, als een typeplaatje. */
+.voetregel {
+  border-top: 1px solid var(--rand);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-top: 3.5rem;
+  padding-top: 0.6rem;
 }
 
 :focus-visible {
