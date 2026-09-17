@@ -35,7 +35,7 @@ bevestiging vraagt. Draai het op je eigen machine: `supabase login` en
 `netlify login` openen een browser, dus in een container werken ze niet.
 
 ```bash
-brew install supabase/tap/supabase     # of: npm i -g supabase
+brew install supabase/tap/supabase     # of zonder installatie: npx supabase (npm -g wordt niet ondersteund)
 npm install -g netlify-cli
 supabase login
 netlify login
@@ -65,7 +65,7 @@ Eén ding kan het script niet zelf:
   doen onder *Site configuration → Build & deploy → Link repository*.
 
 De auth-URL's staan in `supabase/config.toml` en gaan met `supabase config push`
-naar het project. Heet je site anders dan `vonkenboek`, geef die naam dan als
+naar het project. Heet je site anders dan `sparkbook-vizcraft`, geef die naam dan als
 tweede argument mee — het script past het domein dan overal aan.
 
 Let op bij dat bestand: `config push` overschrijft precies die instellingen die
@@ -100,14 +100,14 @@ staan voor als je het later alsnog wilt automatiseren.
 4. **Auth instellen.** *Authentication → Providers → Email*: zet "Email" aan.
    Magic links werken standaard; wachtwoorden heb je niet nodig.
 5. **Redirect-URL's.** *Authentication → URL Configuration*:
-   - `Site URL`: je Netlify-adres, bijvoorbeeld `https://vonkenboek.netlify.app`
+   - `Site URL`: je Netlify-adres, bijvoorbeeld `https://sparkbook-vizcraft.netlify.app`
    - `Redirect URLs`: deze vier toevoegen —
 
      ```
      http://localhost:5173
      http://localhost:4173
-     https://vonkenboek.netlify.app
-     https://*--vonkenboek.netlify.app
+     https://sparkbook-vizcraft.netlify.app
+     https://*--sparkbook-vizcraft.netlify.app
      ```
 
      `5173` is `npm run dev`, `4173` is `npm run preview` (waar je de service

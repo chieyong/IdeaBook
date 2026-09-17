@@ -17,7 +17,7 @@ set -euo pipefail
 STANDAARD_REF="jkiipthtwgzpvoagyqte"
 
 PROJECT_REF="${1:-$STANDAARD_REF}"
-SITE_NAAM="${2:-vonkenboek}"
+SITE_NAAM="${2:-sparkbook-vizcraft}"
 WORTEL="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$WORTEL"
 
@@ -57,7 +57,7 @@ if [[ "$ontbreekt" == 1 ]]; then
   cat >&2 <<'UITLEG'
 
 Installeren:
-  supabase   brew install supabase/tap/supabase   (of: npm i -g supabase)
+  supabase   brew install supabase/tap/supabase   (npm -g wordt niet ondersteund)
   netlify    npm install -g netlify-cli
 UITLEG
   exit 1
@@ -104,10 +104,10 @@ fi
 blauw "Stap 3 — auth-URL's zetten vanuit supabase/config.toml"
 grijs "site_url en de redirect-URL's (localhost + $SITE_NAAM.netlify.app):"
 grep -E 'site_url|localhost|netlify\.app' supabase/config.toml | sed 's/^/     /'
-if [[ "$SITE_NAAM" != "vonkenboek" ]]; then
+if [[ "$SITE_NAAM" != "sparkbook-vizcraft" ]]; then
   grijs "Sitenaam wijkt af; ik pas het domein in config.toml aan naar $SITE_NAAM."
   if bevestig "config.toml aanpassen?"; then
-    sed -i.bak "s/vonkenboek\.netlify\.app/${SITE_NAAM}.netlify.app/g" supabase/config.toml
+    sed -i.bak "s/sparkbook-vizcraft\.netlify\.app/${SITE_NAAM}.netlify.app/g" supabase/config.toml
     rm -f supabase/config.toml.bak
   fi
 fi

@@ -13,13 +13,13 @@ project_id = "vonkenboek"
 
 [auth]
 # Waar de magic link je naartoe stuurt als er geen ander adres is meegegeven.
-site_url = "https://vonkenboek.netlify.app"
+site_url = "https://sparkbook-vizcraft.netlify.app"
 
 # Elk adres waarop de app draait moet hier staan, anders weigert Supabase de
 # redirect. De app stuurt window.location.origin mee als redirect-doel.
 additional_redirect_urls = [
   "http://localhost:5173",
   "http://localhost:4173",
-  "https://vonkenboek.netlify.app",
-  "https://*--vonkenboek.netlify.app",
+  "https://sparkbook-vizcraft.netlify.app",
+  "https://*--sparkbook-vizcraft.netlify.app",
 ]
