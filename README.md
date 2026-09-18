@@ -22,7 +22,8 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
   blijft bewaard en zonder keuze volgt de app de taal van je apparaat.
 - **Aanloop** — een korte filmleader bij het openen: dradenkruis, veeg en aftelling.
 - **PWA** — manifest en service worker, dus installeerbaar op je homescreen.
-- Licht en donker thema via `prefers-color-scheme`, mobile-first.
+- **Licht of donker** — volgt je systeem, of je zet het vast op licht of donker
+  bij *Account → Weergave*. Mobile-first.
 - **Retro-vormgeving** — brede mono-displayletters, papier-en-inkt palet, omgekeerde panelen.
 
 Fase 2 (sjablonen, tags, scores, matrix) en fase 3 (review, herontdek, koppelen)
@@ -208,6 +209,27 @@ en `verwijderIdee` al klaarliggen.
   fragmenten gaan mee via `on delete cascade`.
 
 Gearchiveerde ideeën vind je terug via het statusfilter op de archiefpagina.
+
+## Thema
+
+Standaard volgt de app `prefers-color-scheme`. Bij *Account → Weergave* kun je
+licht of donker vastzetten; dat zet `data-thema` op `<html>` en wordt onthouden
+in `localStorage`.
+
+De CSS regelt dat met één bron voor het donkere palet, die op twee manieren
+geldt: `@media (prefers-color-scheme: dark) :root:not([data-thema='licht'])` en
+`:root[data-thema='donker']`. Zonder preprocessor is dat blok nu eenmaal twee
+keer nodig — daarom staan alle schemagebonden kleuren als variabele in dat ene
+blok, en niet verspreid over de stylesheet.
+
+Twee dingen die er makkelijk af vallen bij een wijziging:
+
+- `index.html` zet `data-thema` al vóór de eerste verf met een klein scriptje.
+  Zonder dat flitst het systeemthema ~40ms door bij wie licht of donker heeft
+  vastgezet. De opslagsleutel staat daar én in `ThemaContext.jsx`.
+- De `theme-color` van de statusbalk staat als twee mediaregels in `index.html`.
+  Zet je het thema vast, dan plaatst `ThemaContext` er een derde vooraan die
+  altijd wint; bij "Systeem" wordt die weer weggehaald.
 
 ## Taal
 

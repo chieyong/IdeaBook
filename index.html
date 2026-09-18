@@ -12,6 +12,19 @@
     <meta name="apple-mobile-web-app-title" content="SparkBook" />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/martian-mono-latin.woff2" crossorigin />
     <link rel="preload" as="font" type="font/woff2" href="/fonts/space-grotesk-latin.woff2" crossorigin />
+    <script>
+      // Vóór de eerste verf, anders flitst het systeemthema door bij wie in de
+      // app licht of donker heeft afgedwongen. Sleutel gelijkhouden met
+      // src/context/ThemaContext.jsx.
+      try {
+        var gekozen = localStorage.getItem('sparkbook.thema')
+        if (gekozen === 'licht' || gekozen === 'donker') {
+          document.documentElement.setAttribute('data-thema', gekozen)
+        }
+      } catch (e) {
+        /* Geblokkeerde opslag: dan volgt de app gewoon het systeem. */
+      }
+    </script>
     <title>SparkBook</title>
   </head>
   <body>

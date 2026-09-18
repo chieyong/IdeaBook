@@ -80,29 +80,62 @@
   --max-breedte: 640px;
 }
 
+/* Donker palet. Geldt als het systeem erom vraagt, tenzij je in de app licht
+   hebt afgedwongen — en altijd als je donker hebt afgedwongen. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+  :root:not([data-thema='licht']) {
+  color-scheme: dark;
 
-    --papier: #131312;
-    --papier-diep: #0d0d0c;
-    --kaart: #1c1c19;
-    --kaart-hoog: #232320;
-    --inkt: #efece0;
-    --inkt-zacht: #9d978a;
-    --inkt-flauw: #8d8877;
-    --rand: #33322b;
-    --rand-zacht: #262521;
+  --papier: #131312;
+  --papier-diep: #0d0d0c;
+  --kaart: #1c1c19;
+  --kaart-hoog: #232320;
+  --inkt: #efece0;
+  --inkt-zacht: #9d978a;
+  --inkt-flauw: #8d8877;
+  --rand: #33322b;
+  --rand-zacht: #262521;
 
-    --diep: #f2efe4;
-    --diep-inkt: #15150f;
-    --diep-zacht: #63604f;
-    --diep-rand: #d3ccb8;
+  --diep: #f2efe4;
+  --diep-inkt: #15150f;
+  --diep-zacht: #63604f;
+  --diep-rand: #d3ccb8;
 
-    --vonk: #ef7c3c;
-    --vonk-zacht: #2c1d12;
-    --gevaar: #f0a59c;
-  }
+  --vonk: #ef7c3c;
+  --vonk-zacht: #2c1d12;
+  --gevaar: #f0a59c;
+  --op-vonk: #17110b;
+  --op-gevaar: #2a0f0c;
+  --paneel-melding: #a8461a;
+  --paneel-fout: #8f241c;
+}
+}
+
+:root[data-thema='donker'] {
+  color-scheme: dark;
+
+  --papier: #131312;
+  --papier-diep: #0d0d0c;
+  --kaart: #1c1c19;
+  --kaart-hoog: #232320;
+  --inkt: #efece0;
+  --inkt-zacht: #9d978a;
+  --inkt-flauw: #8d8877;
+  --rand: #33322b;
+  --rand-zacht: #262521;
+
+  --diep: #f2efe4;
+  --diep-inkt: #15150f;
+  --diep-zacht: #63604f;
+  --diep-rand: #d3ccb8;
+
+  --vonk: #ef7c3c;
+  --vonk-zacht: #2c1d12;
+  --gevaar: #f0a59c;
+  --op-vonk: #17110b;
+  --op-gevaar: #2a0f0c;
+  --paneel-melding: #a8461a;
+  --paneel-fout: #8f241c;
 }
 
 * {
@@ -761,13 +794,7 @@ h2 {
 .label-vonk {
   background: var(--vonk);
   border-color: var(--vonk);
-  color: var(--kaart-hoog);
-}
-
-@media (prefers-color-scheme: dark) {
-  .label-vonk {
-    color: #17110b;
-  }
+  color: var(--op-vonk);
 }
 
 /* ------------------------------------------------------- idee-acties ----- */
@@ -818,13 +845,7 @@ h2 {
 .knop-gevaar {
   background: var(--gevaar);
   border-color: var(--gevaar);
-  color: var(--kaart-hoog);
-}
-
-@media (prefers-color-scheme: dark) {
-  .knop-gevaar {
-    color: #2a0f0c;
-  }
+  color: var(--op-gevaar);
 }
 
 /* ------------------------------------------------------------ tijdlijn --- */
@@ -1221,21 +1242,11 @@ h2 {
 }
 
 .paneel .melding {
-  color: #f0a969;
+  color: var(--paneel-melding);
 }
 
 .paneel .fout {
-  color: #f0a59c;
-}
-
-@media (prefers-color-scheme: dark) {
-  .paneel .melding {
-    color: #a8461a;
-  }
-
-  .paneel .fout {
-    color: #8f241c;
-  }
+  color: var(--paneel-fout);
 }
 
 .paneel code,
