@@ -14,6 +14,8 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - **Inbox** — alles wat je vangt krijgt status `vonk` en verschijnt op het startscherm.
 - **Overzicht** — alle ideeën, te filteren op type en status.
 - **Detailpagina** — tijdlijn van losse fragmenten, met een veld om er een bij te zetten.
+- **Aanpassen, archiveren, verwijderen** — titel, type en status wijzigen; archiveren
+  haalt een idee uit de lijst zonder het kwijt te raken; verwijderen vraagt eerst.
 - **Inloggen met wachtwoord** — je logt in de app zelf in. Een inloglink per mail
   blijft bestaan als terugval; zie *Waarom een wachtwoord* hieronder.
 - **Nederlands of Engels** — te wisselen met NL | EN in de merkbalk; de keuze
@@ -23,8 +25,9 @@ React + Vite · Supabase (database, magic-link login, storage) · PWA · Netlify
 - Licht en donker thema via `prefers-color-scheme`, mobile-first.
 - **Retro-vormgeving** — brede mono-displayletters, papier-en-inkt palet, omgekeerde panelen.
 
-Fase 2 (sjablonen, status, tags, scores, matrix) en fase 3 (review, herontdek,
-kerkhof, koppelen) zitten er nog niet in; het datamodel houdt er wel al rekening mee.
+Fase 2 (sjablonen, tags, scores, matrix) en fase 3 (review, herontdek, koppelen)
+zitten er nog niet in; het datamodel houdt er wel al rekening mee. Fragmenten zijn
+nog niet los te wijzigen of te verwijderen.
 
 ## Zelf opstarten
 
@@ -187,6 +190,24 @@ Google Wachtwoordbeheer vullen het in — de velden hebben de juiste
 `autocomplete`-waarden (`email` en `current-password`).
 
 De inloglink blijft bestaan als terugval, onder *Liever een inloglink*.
+
+## Archiveren, aanpassen, verwijderen
+
+Alledrie gaan via de detailpagina; er was geen migratie voor nodig, want de
+RLS-regels stonden `update` en `delete` al toe en `ideeen.js` had `werkIdeeBij`
+en `verwijderIdee` al klaarliggen.
+
+- **Aanpassen** zet titel, type en status in één `PATCH`. Annuleren gooit het
+  concept weg zonder de database aan te raken, en een lege titel wordt
+  tegengehouden voordat er iets verstuurd wordt (de database eist er ook een).
+- **Archiveren** is de status `kerkhof`, die `haalIdeeen` al uit de gewone lijst
+  filtert. Terughalen zet hem op `verkennen` — de vorige status wordt niet
+  bewaard. In de UI heet die status "Archief"; de waarde in de database blijft
+  `kerkhof`, zodat bestaande rijen kloppen.
+- **Verwijderen** vraagt eerst, in de pagina zelf. Het is definitief: de
+  fragmenten gaan mee via `on delete cascade`.
+
+Gearchiveerde ideeën vind je terug via het statusfilter op de archiefpagina.
 
 ## Taal
 
