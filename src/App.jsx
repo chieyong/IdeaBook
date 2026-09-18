@@ -4,6 +4,7 @@ import Leader from './components/Leader'
 import TaalKnop from './components/TaalKnop'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { TaalProvider, useTaal } from './context/TaalContext'
+import { ThemaProvider } from './context/ThemaContext'
 import AccountPage from './pages/AccountPage'
 import DetailPage from './pages/DetailPage'
 import HerstelPage from './pages/HerstelPage'
@@ -61,11 +62,13 @@ function Binnenkant() {
 
 export default function App() {
   return (
-    <TaalProvider>
-      <AuthProvider>
-        <Leader />
-        <Binnenkant />
-      </AuthProvider>
-    </TaalProvider>
+    <ThemaProvider>
+      <TaalProvider>
+        <AuthProvider>
+          <Leader />
+          <Binnenkant />
+        </AuthProvider>
+      </TaalProvider>
+    </ThemaProvider>
   )
 }
