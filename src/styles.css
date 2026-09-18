@@ -770,6 +770,63 @@ h2 {
   }
 }
 
+/* ------------------------------------------------------- idee-acties ----- */
+
+.ideeacties {
+  border-top: 1px solid var(--rand);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+}
+
+.knop-kaal-gevaar {
+  color: var(--gevaar);
+  margin-left: auto;
+}
+
+.knop-kaal-gevaar:hover {
+  color: var(--gevaar);
+}
+
+/* Verwijderen vraagt eerst: één tik mag zoiets niet doen. */
+.bevestig {
+  border: 1px solid var(--gevaar);
+  border-radius: 18px;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+}
+
+.bevestig .hint {
+  color: var(--gevaar);
+  display: block;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-family: var(--grotesk);
+  font-size: 0.85rem;
+}
+
+.bevestig-knoppen {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.8rem;
+}
+
+.knop-gevaar {
+  background: var(--gevaar);
+  border-color: var(--gevaar);
+  color: var(--kaart-hoog);
+}
+
+@media (prefers-color-scheme: dark) {
+  .knop-gevaar {
+    color: #2a0f0c;
+  }
+}
+
 /* ------------------------------------------------------------ tijdlijn --- */
 
 .tijdlijn {
